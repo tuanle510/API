@@ -2,6 +2,7 @@
 using MISA.Core.Interfaces.Services;
 using MISA.Core.Services;
 using MISA.Infrastructure.Repository;
+using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,10 +26,21 @@ builder.Services.AddCors(options =>
         });
 
 });
+// Thêm Newtonsoft JSON để sửa lỗi trả về của API
+builder.Services.AddMvc()
+    .AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+});
 
 // Cấu hình Dependency Injection:
 builder.Services.AddScoped<IFixedAssetRepository, FixedAssetRepository>();
 builder.Services.AddScoped<IFixedAssetService, FixedAssetService>();
+builder.Services.AddScoped<IFixedAssetCategoryRepository, FixedAssetCategoryRepository>();
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+ 
+
+builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 
 var app = builder.Build(); 
 
@@ -39,6 +51,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("AllowAll");
 app.UseAuthorization();
 
 app.MapControllers();

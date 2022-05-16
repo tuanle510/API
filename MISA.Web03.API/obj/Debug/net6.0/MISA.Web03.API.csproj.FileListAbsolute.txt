@@ -31,3 +31,8 @@ D:\MISA\HCSN-project\API\MISA.Web03.API\bin\Debug\net6.0\MISA.Core.dll
 D:\MISA\HCSN-project\API\MISA.Web03.API\bin\Debug\net6.0\MISA.Infrastructure.dll
 D:\MISA\HCSN-project\API\MISA.Web03.API\bin\Debug\net6.0\MISA.Core.pdb
 D:\MISA\HCSN-project\API\MISA.Web03.API\bin\Debug\net6.0\MISA.Infrastructure.pdb
+D:\MISA\HCSN-project\API\MISA.Web03.API\bin\Debug\net6.0\.filenesting.json
+D:\MISA\HCSN-project\API\MISA.Web03.API\bin\Debug\net6.0\Microsoft.AspNetCore.JsonPatch.dll
+D:\MISA\HCSN-project\API\MISA.Web03.API\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+D:\MISA\HCSN-project\API\MISA.Web03.API\bin\Debug\net6.0\Newtonsoft.Json.dll
+D:\MISA\HCSN-project\API\MISA.Web03.API\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll

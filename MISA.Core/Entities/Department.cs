@@ -2,10 +2,10 @@
 {
     public class Department
     {
-        public Guid department_id { get; set; }
+        public Guid DepartmentId { get; set; }
 
-        public string department_code { get; set; }
-        public string department_name { get; set; }
+        public string DepartmentCode { get; set; }
+        public string DepartmentName { get; set; }
         public string description { get; set; }
         public string organization_id { get; set; }
     }

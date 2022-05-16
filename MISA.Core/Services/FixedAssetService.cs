@@ -1,4 +1,5 @@
-﻿using MISA.Core.Entities;
+﻿ using MISA.Core.Entities;
+using MISA.Core.Exceptions;
 using MISA.Core.Interfaces.Respositories;
 using MISA.Core.Interfaces.Services;
 using System;
@@ -9,83 +10,118 @@ using System.Threading.Tasks;
 
 namespace MISA.Core.Services
 {
-    public class FixedAssetService : IFixedAssetService
+    public class FixedAssetService : BaseService<FixedAsset>, IFixedAssetService
     {
         IFixedAssetRepository _fixedAssettRepository;
-        public FixedAssetService(IFixedAssetRepository fixedAssetRepository)
+        public FixedAssetService(IFixedAssetRepository fixedAssetRepository):base(fixedAssetRepository)
         {
             _fixedAssettRepository = fixedAssetRepository;
         }
 
         public int InsertService(FixedAsset fixedAsset)
         {
+            var mode = 1;
             // Validate dữ liệu
             // 1. Kiểm tra xem có trống hay không thì add vào list
-            //var validateErrorsMsg = new List<String>();
-            //if (string.IsNullOrEmpty(fixedAsset.fixed_asset_code))
-            //{
-            //    validateErrorsMsg.Add("Mã tài sản không được trùng");
-            //}
-            //if (string.IsNullOrEmpty(fixedAsset.fixed_asset_name))
-            //{
-            //    validateErrorsMsg.Add("Tên tài sản không được trùng");
-            //}
-            //if (string.IsNullOrEmpty(fixedAsset.department_code))
-            //{
-            //    validateErrorsMsg.Add("Mã bộ phận sử dụng không được để trống");
-            //}
-            //if (string.IsNullOrEmpty(fixedAsset.department_name))
-            //{
-            //    validateErrorsMsg.Add("Tên bộ phận sử dụng không được để trống");
-            //}
-            //if (string.IsNullOrEmpty(fixedAsset.fixed_asset_category_code))
-            //{
-            //    validateErrorsMsg.Add("Mã loại tài sản không được để trống");
-            //}
-            //if (string.IsNullOrEmpty(fixedAsset.fixed_asset_category_name))
-            //{
-            //    validateErrorsMsg.Add("Tên loại tài sản không được để trống");
-            //}
+            var validateErrorsMsg = new List<String>();
+            if (string.IsNullOrEmpty(fixedAsset.FixedAssetCode))
+            {
+                validateErrorsMsg.Add("Mã tài sản không được trùng");
+            }
+            if (string.IsNullOrEmpty(fixedAsset.FixedAssetName))
+            {
+                validateErrorsMsg.Add("Tên tài sản không được trùng");
+            }
+            if (string.IsNullOrEmpty(fixedAsset.department_code))
+            {
+                validateErrorsMsg.Add("Mã bộ phận sử dụng không được để trống");
+            }
+            if (string.IsNullOrEmpty(fixedAsset.department_name))
+            {
+                validateErrorsMsg.Add("Tên bộ phận sử dụng không được để trống");
+            }
+            if (string.IsNullOrEmpty(fixedAsset.fixed_asset_category_code))
+            {
+                validateErrorsMsg.Add("Mã loại tài sản không được để trống");
+            }
+            if (string.IsNullOrEmpty(fixedAsset.fixed_asset_category_name))
+            {
+                validateErrorsMsg.Add("Tên loại tài sản không được để trống");
+            }
 
-            // 1.1 Kiểm tra trong errorList có lỗi nào không 
-            //if (validateErrorsMsg.Count > 0)
-            //{
-            //    // Khởi tạo đối tượng (Khi có lỗi mới khỏi tạo đối tượng)
-            //    var validateError = new ValidateError();
-            //    validateError.UserMsg ="Trùng";
-            //    validateError.Data = validateErrorsMsg;
-            //    return StatusCode(400, validateError);
-            //}
-            //// 2. Kiểm tra xem mã đã tồn tại hay chưa?
-            //var sqlQueryCheckDuplicateCode = $"SELECT fixed_asset_code FROM fixed_asset WHERE fixed_asset_code=@fixedAssetCode";
-            //var employeeCodeDuplicate = sqlConnection.QueryFirstOrDefault<string>(sqlQueryCheckDuplicateCode, param: new { fixedAssetCode = fixedAsset.fixed_asset_code }); 
-            ////Nếu có 1 tham số chuyền vào thì dùng luôn param new                                                                                                                                     
-            ////var parametersDup = new DynamicParameters();                                                                                                        
-            ////parametersDup.Add("@fixedAssetCode", fixedAsset.fixed_asset_code);                                                                         
-            ////var employeeCodeDuplicate = sqlConnection.QueryFirstOrDefault<string>(sqlQueryCheckDuplicateCode, param: parametersDup);
-            //if (employeeCodeDuplicate != null)
-            //{
-            //    var validateError = new ValidateError();
-            //    validateError.UserMsg = "Mã tài sản đã tổn tại trong hệ thống, vui lòng kiểm tra lại";
-            //    return StatusCode(400, validateError);
-            //}
+            var isDuplicate = _fixedAssettRepository.CheckFixedAssetExist(fixedAsset.FixedAssetCode, fixedAsset.FixedAssetId, mode);
+            if (isDuplicate == true)
+            {
+                validateErrorsMsg.Add("Mã tài sản đã tồn tại trong hệ thống");
+            }
+
+            // Kiểm tra trong errorList có lỗi nào không 
+            if (validateErrorsMsg.Count > 0)
+            {
+                // Khởi tạo đối tượng (Khi có lỗi mới khỏi tạo đối tượng)
+                var validateError = new ValidateError();
+                validateError.UserMsg = "Đã có lỗi";
+                validateError.Data = validateErrorsMsg;
+                throw new MISAValidateException("Dữ liệu đầu vào không hợp lệ", validateErrorsMsg);
+            }
+
             // Sau khi kiểm tra các thông tin đã hợp lệ thì thêm vào database
             var res = _fixedAssettRepository.Insert(fixedAsset);
             // Trả về kết quả cho client
             return res;
         }
 
-        public int UpadteService(FixedAsset fixedAsset)
+        public int UpadteService(Guid id ,FixedAsset fixedAsset)
         {
-            // Xử lí về nghiệp vụ
-            // 1. Kiểm tra đầu vào có hay chưa 
+            var mode = 2;
+            // Validate dữ liệu
+            // 1. Kiểm tra xem có trống hay không thì add vào list
+            var validateErrorsMsg = new List<String>();
+            if (string.IsNullOrEmpty(fixedAsset.FixedAssetCode))
+            {
+                validateErrorsMsg.Add("Mã tài sản không được trùng");
+            }
+            if (string.IsNullOrEmpty(fixedAsset.FixedAssetName))
+            {
+                validateErrorsMsg.Add("Tên tài sản không được trùng");
+            }
+            if (string.IsNullOrEmpty(fixedAsset.department_code))
+            {
+                validateErrorsMsg.Add("Mã bộ phận sử dụng không được để trống");
+            }
+            if (string.IsNullOrEmpty(fixedAsset.department_name))
+            {
+                validateErrorsMsg.Add("Tên bộ phận sử dụng không được để trống");
+            }
+            if (string.IsNullOrEmpty(fixedAsset.fixed_asset_category_code))
+            {
+                validateErrorsMsg.Add("Mã loại tài sản không được để trống");
+            }
+            if (string.IsNullOrEmpty(fixedAsset.fixed_asset_category_name))
+            {
+                validateErrorsMsg.Add("Tên loại tài sản không được để trống");
+            }
 
-            // 2. Kiểm tra mã tài sản có trùng hay không? => trùng thì báo lỗi
+            var isDuplicate = _fixedAssettRepository.CheckFixedAssetExist(fixedAsset.FixedAssetCode, id, mode);
+            if (isDuplicate == true)
+            {
+                validateErrorsMsg.Add("Mã tài sản đã tồn tại trong hệ thống");
+            }
 
-            // Sau khi kiểm tra các thông tin đã hợp lệ thì cập nhật vào database
+            // Kiểm tra trong errorList có lỗi nào không 
+            if (validateErrorsMsg.Count > 0)
+            {
+                // Khởi tạo đối tượng (Khi có lỗi mới khỏi tạo đối tượng)
+                var validateError = new ValidateError();
+                validateError.UserMsg = "Đã có lỗi";
+                validateError.Data = validateErrorsMsg;
+                throw new MISAValidateException("Dữ liệu đầu vào không hợp lệ", validateErrorsMsg);
+            }
 
+            // Sau khi kiểm tra các thông tin đã hợp lệ thì thêm vào database
+            var res = _fixedAssettRepository.Update(id, fixedAsset);
             // Trả về kết quả cho client
-            throw new NotImplementedException();
+            return res;
         }
     }
 }

@@ -1,23 +1,23 @@
-﻿{
+{
   "$schema": "https://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:51557",
-      "sslPort": 0
+      "applicationUrl": "http://localhost:4663/",
+      "sslPort": 44385
     }
   },
   "profiles": {
     "MISA.Web03.API": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "http://localhost:5234",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "http://localhost:5234",
+      "dotnetRunMessages": true
     },
     "IIS Express": {
       "commandName": "IISExpress",

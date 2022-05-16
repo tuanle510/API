@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MISA.Core.Entities;
+using MISA.Core.Exceptions;
 using MISA.Core.Interfaces.Respositories;
 using MISA.Core.Interfaces.Services;
 using MISA.Infrastructure.Repository;
@@ -21,7 +22,11 @@ namespace MISA.Web03.API.Controllers
             _fixedAssetRepository = fixedAssetRepository;
             _fixedAssetService = fixedAssetService;
         }
-        // GET: api/<FixedAssetController>
+            
+        /// <summary>
+        /// Lấy toàn bộ dữ liệu
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Get()
         {
@@ -37,11 +42,34 @@ namespace MISA.Web03.API.Controllers
             }
         }
 
-        // GET api/<FixedAssetController>/5
+        // GET api/<FixedAssetController>/id
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult Get(Guid id)
         {
-            return "value";
+            try
+            {
+                var fixedAsset = _fixedAssetRepository.GetById(id);
+                return Ok(fixedAsset);
+            }
+            catch (Exception ex)
+            {
+                return HandleException(ex);
+            }
+        }
+
+        [HttpGet("NewFixedAssetCode")]
+        public IActionResult GetNewAssetCode()
+        {
+            try
+            {
+                var newFixedAssetCode = _fixedAssetRepository.GetNewFixedAssetCode();
+                return Ok(newFixedAssetCode);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         // POST api/<FixedAssetController>
@@ -61,14 +89,32 @@ namespace MISA.Web03.API.Controllers
 
         // PUT api/<FixedAssetController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(Guid id, [FromBody] FixedAsset fixedAsset)
         {
+            try
+            {
+                var res = _fixedAssetService.UpadteService(id, fixedAsset);
+                return StatusCode(200);
+            }
+            catch (Exception ex)
+            {
+                return HandleException(ex);
+            }
         }
 
         // DELETE api/<FixedAssetController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(Guid id)
         {
+            try
+            {
+                var res = _fixedAssetRepository.Delete(id);
+                return StatusCode(200);
+            }
+            catch (Exception ex)
+            {
+                return HandleException(ex);
+            }
         }
 
         /// <summary>
@@ -79,12 +125,17 @@ namespace MISA.Web03.API.Controllers
         /// CreatedBy: LTTUAN (09/05/2022)
         private IActionResult HandleException(Exception ex)
         {
-            var validateError = new ValidateError();
-            validateError.DevMsg = ex.Message;
-            validateError.UserMsg = "Có lỗi xảy ra, vui lòng liên hệ MISA để hỗ trợ";
-            validateError.Data = "001";
-            return StatusCode(500, validateError); //Lỗi từ server trả về 500
-
+            var res = new
+            {
+                devMsg = ex.Message,
+                userMsg = "Có lỗi xấy ra vui lòng liên hệ MISA để được hỗ trợ 2",
+                errorCode = "001",
+                data = ex.Data
+            };
+            if (ex is MISAValidateException)
+                return StatusCode(400, res); //Lỗi từ server trả về 500
+            else
+                return StatusCode(500, res);
         }
     }
 }

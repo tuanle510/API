@@ -3,57 +3,90 @@ using Microsoft.Extensions.Configuration;
 using MISA.Core.Entities;
 using MISA.Core.Interfaces.Respositories;
 using MySqlConnector;
+using System.Text.RegularExpressions;
 
 namespace MISA.Infrastructure.Repository
 {
-    public class FixedAssetRepository : IFixedAssetRepository
+    public class FixedAssetRepository :BaseRepository<FixedAsset>, IFixedAssetRepository
     {
+      
+        public FixedAssetRepository(IConfiguration configuration):base(configuration)
+        {
+           
+        }
+
         /// <summary>
-        /// Xử lí kết nốt với database 
+        /// Kiểm tra dữ lệu có đã tồn tại trong hệ thống hay chưa
         /// </summary>
-        IConfiguration _configuration;
-        public FixedAssetRepository(IConfiguration configuration)
+        /// <param name="fixedAssetCode"></param>
+        /// <returns></returns>
+        public bool CheckFixedAssetExist(string fixedAssetCode, Guid id,int mode)
         {
-            _configuration = configuration;
-        }
-        public bool CheckFixedAssetExist(string fixedAssetCode)
-        {
-            throw new NotImplementedException();
+            var sqlQueryCheckDuplicateCode = "";
+            if (mode == 1)
+            {
+             sqlQueryCheckDuplicateCode = $"SELECT FixedAssetCode FROM FixedAsset WHERE fixed_asset_code=@fixedAssetCode";
+            }
+
+            if(mode == 2)
+            {
+             sqlQueryCheckDuplicateCode = $"SELECT FixedAssetCode FROM FixedAsset WHERE FixedAssetCode=@fixedAssetCode AND FixedAssetId <> @FixedAssetId";
+            }
+            // Kiểm tra xem mã đã tồn tại hay chưa?
+            var parametersDup = new DynamicParameters();
+            parametersDup.Add("@fixedAssetCode", fixedAssetCode);
+            parametersDup.Add("@fixedAssetId", id);
+            var fixedAssetCodeDuplicate = _sqlConnection.QueryFirstOrDefault<string>(sqlQueryCheckDuplicateCode, param: parametersDup);
+
+            if (fixedAssetCodeDuplicate != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
-        public int Delete(Guid fixedAssetId)
+        public int Delete(Guid id)
         {
-            throw new NotImplementedException();
+            //Thực hiện xóa dữ liệu
+            var sqlQuery = $"DELETE FROM fixed_asset WHERE fixed_asset_id = @fixedAssetId";
+            var parameters = new DynamicParameters();
+            parameters.Add("@fixedAssetId", id);
+            var res = _sqlConnection.Execute(sqlQuery, param: parameters);
+            return res;
         }
 
+        public FixedAsset GetById(Guid id)
+        {
+            // Thực hiện lấy dữ liệu
+            var sqlQuery = $"SELECT * FROM fixed_asset WHERE fixed_asset_id = @fixed_asset_id";
+            var parameters = new DynamicParameters();
+            parameters.Add("@fixed_asset_id", id);
+            var asset = _sqlConnection.QueryFirstOrDefault<FixedAsset>(sqlQuery, param: parameters);
+            //Trả về dữ liệu cho clien
+            return asset;
+        }
 
         /// <summary>
-        /// Lấy tất cả dữ liệu tài sản về 
+        /// Xử lí tạo ra mã mới
         /// </summary>
         /// <returns></returns>
-        public List<FixedAsset> Get()
-        {
-            // Khai báo thông tin database:
-            var connectionString = _configuration.GetConnectionString("LTTUAN");
-
-            // Khỏi tạo kết nối đến database --> sử dụng mySqlConnector
-            var sqlConnection = new MySqlConnection(connectionString);
-
-            // Thực hiện lấy dữ liệu --> Dapper
-            var data = sqlConnection.Query<FixedAsset>("SELECT * FROM fixed_asset");
-
-            //Trả về dữ liệu cho clien
-            return data.ToList();
-        } 
-
         public string GetNewFixedAssetCode()
         {
-            // Kết nốt đến database
 
-            // Lấy mã tài sản mới nhất về (tính theo thời gian)
+            var sqlQuery = "SELECT FixedAssetCode FROM FixedAsset ORDER BY created_date DESC";
 
-            // Trả về mã nhân viên mới
-            throw new NotImplementedException();
+            var lastCode = _sqlConnection.QueryFirstOrDefault<String>(sqlQuery);
+            //var strCode = lastCode.Substring(0, 2);
+            //var numberCode = int.Parse(lastCode.Substring(2));
+            //Regex.Match(subjectString, @"\d+").Value;
+            var newCode = lastCode.Substring(0, 2) + (int.Parse(lastCode.Substring(2)) + 1);
+            //var newCode = Regex.Match(lastCode, @"\d+").Value;
+
+
+            return newCode;
         }
 
         public List<FixedAsset> GetPaging(int pageIndex, int pageSize)
@@ -64,21 +97,14 @@ namespace MISA.Infrastructure.Repository
         public int Insert(FixedAsset fixedAsset)
         {
             //Tạo id mới
-            fixedAsset.fixed_asset_id = Guid.NewGuid();
-
-            // Khai báo thông tin database:
-            var connectionString = _configuration.GetConnectionString("LTTUAN");
-
-            // Khỏi tạo kết nối đến database --> sử dụng mySqlConnector
-            var sqlConnection = new MySqlConnection(connectionString);
+            fixedAsset.FixedAssetId = Guid.NewGuid();
 
             // Thực hiện thêm mới dữ liệu
-            var sqlQuery = $"INSERT INTO fixed_asset(fixed_asset_id,fixed_asset_code, fixed_asset_name, department_id,  department_code, department_name, fixed_asset_category_id, fixed_asset_category_code,fixed_asset_category_name, purchase_date, cost, quantity, depreciation_rate, tracked_year, life_time , production_year) VALUES (@fixed_asset_id,@fixed_asset_code, @fixed_asset_name, @department_id,  @department_code, @department_name, @fixed_asset_category_id, @fixed_asset_category_code,@fixed_asset_category_name, @purchase_date, @cost, @quantity, @depreciation_rate, @tracked_year, @life_time , @production_year)";
-            //var sqlQuery = $"INSERT INTO fixed_asset(fixed_asset_id,fixed_asset_code, fixed_asset_name,   department_code, department_name, fixed_asset_category_code,fixed_asset_category_name, purchase_date, cost, quantity, depreciation_rate, tracked_year, life_time , production_year) VALUES (@fixed_asset_id,@fixed_asset_code, @fixed_asset_name, @department_code, @department_name, @fixed_asset_category_code,@fixed_asset_category_name, @purchase_date, @cost, @quantity, @depreciation_rate, @tracked_year, @life_time , @production_year)";
+            var sqlQuery = $"INSERT INTO FixedAsset(FixedAssetId,FixedAssetCode, FixedAssetName, department_id,  department_code, department_name, fixed_asset_category_id, fixed_asset_category_code,fixed_asset_category_name, purchase_date, cost, quantity, depreciation_rate, tracked_year, life_time , production_year) VALUES (@fixed_asset_id,@fixed_asset_code, @fixed_asset_name, @department_id,  @department_code, @department_name, @fixed_asset_category_id, @fixed_asset_category_code,@fixed_asset_category_name, @purchase_date, @cost, @quantity, @depreciation_rate, @tracked_year, @life_time , @production_year)";
             var parameters = new DynamicParameters();
-            parameters.Add("@fixed_asset_id", fixedAsset.fixed_asset_id);
-            parameters.Add("@fixed_asset_code", fixedAsset.fixed_asset_code);
-            parameters.Add("@fixed_asset_name", fixedAsset.fixed_asset_name);
+            parameters.Add("@fixed_asset_id", fixedAsset.FixedAssetId);
+            parameters.Add("@fixed_asset_code", fixedAsset.FixedAssetCode);
+            parameters.Add("@fixed_asset_name", fixedAsset.FixedAssetName);
             parameters.Add("@department_id", fixedAsset.department_id);
             parameters.Add("@department_code", fixedAsset.department_code);
             parameters.Add("@department_name", fixedAsset.department_name);
@@ -93,13 +119,34 @@ namespace MISA.Infrastructure.Repository
             parameters.Add("@life_time", fixedAsset.life_time);
             parameters.Add("@production_year", fixedAsset.production_year);
          
-            var res = sqlConnection.Execute(sqlQuery, param: parameters);
+            var res = _sqlConnection.Execute(sqlQuery, param: parameters);
             return res;
         }
 
-        public int Update(FixedAsset fixedAsset)
+        public int Update(Guid id, FixedAsset fixedAsset)
         {
-            throw new NotImplementedException();
+            // Thực hiện thêm mới dữ liệu
+            var sqlQuery = $"UPDATE FixedAsset SET FixedAssetCode=@fixed_asset_code, FixedAssetName=@fixed_asset_name, department_id=@department_id,  department_code = @department_code, department_name = @department_name, fixed_asset_category_id=@fixed_asset_category_id, fixed_asset_category_code=@fixed_asset_category_code,fixed_asset_category_name=@fixed_asset_category_name, purchase_date=@purchase_date, cost=@cost, quantity=@quantity, depreciation_rate=@depreciation_rate, tracked_year=@tracked_year, life_time=@life_time , production_year=@production_year  WHERE fixed_asset_id = @fixed_asset_id";
+            var parameters = new DynamicParameters();
+            parameters.Add("@fixed_asset_id", id);
+            parameters.Add("@fixed_asset_code", fixedAsset.FixedAssetCode);
+            parameters.Add("@fixed_asset_name", fixedAsset.FixedAssetName);
+            parameters.Add("@department_id", fixedAsset.department_id);
+            parameters.Add("@department_code", fixedAsset.department_code);
+            parameters.Add("@department_name", fixedAsset.department_name);
+            parameters.Add("@fixed_asset_category_id", fixedAsset.fixed_asset_category_id);
+            parameters.Add("@fixed_asset_category_code", fixedAsset.fixed_asset_category_code);
+            parameters.Add("@fixed_asset_category_name", fixedAsset.fixed_asset_category_name);
+            parameters.Add("@purchase_date", fixedAsset.purchase_date);
+            parameters.Add("@cost", fixedAsset.cost);
+            parameters.Add("@quantity", fixedAsset.quantity);
+            parameters.Add("@depreciation_rate", fixedAsset.depreciation_rate);
+            parameters.Add("@tracked_year", fixedAsset.tracked_year);
+            parameters.Add("@life_time", fixedAsset.life_time);
+            parameters.Add("@production_year", fixedAsset.production_year);
+
+            var res = _sqlConnection.Execute(sqlQuery, param: parameters);
+            return res;
         }
     }
 }

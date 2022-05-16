@@ -5,11 +5,11 @@
         /// <summary>
         /// Khóa chính
         /// </summary>
-        public Guid fixed_asset_category_id { get; set; }
+        public Guid FixedAssetCategoryId { get; set; }
 
-        public string fixed_asset_category_name { get; set; }
+        public string FixedAssetCategoryIdName { get; set; }
 
-        public string fixed_asset_category_code { get; set; }
+        public string FixedAssetCategoryCode { get; set; }
 
         //public string organization_id { get; set; }
 

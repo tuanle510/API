@@ -7,21 +7,20 @@ using System.Threading.Tasks;
 
 namespace MISA.Core.Interfaces.Respositories
 {
-    public interface IFixedAssetRepository
+    public interface IFixedAssetRepository: IBaseRepository<FixedAsset>
     {
-        List<FixedAsset> Get();
-
-        int Insert(FixedAsset fixedAsset);
-
-        int Update(FixedAsset fixedAsset);
-
-        int Delete(Guid  fixedAssetId);
-
-        List<FixedAsset> GetPaging(int pageIndex, int pageSize);
+        FixedAsset GetById(Guid id);
 
         string GetNewFixedAssetCode();
 
-        bool CheckFixedAssetExist(string fixedAssetCode);
+        List<FixedAsset> GetPaging(int pageIndex, int pageSize);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fixedAssetCode"></param>
+        /// <returns>true - đã tồn tại, false - chưa tồn tại</returns>
+        bool CheckFixedAssetExist(string fixedAssetCode, Guid id, int mode);
 
     }
 }
