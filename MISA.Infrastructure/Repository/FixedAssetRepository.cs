@@ -7,12 +7,12 @@ using System.Text.RegularExpressions;
 
 namespace MISA.Infrastructure.Repository
 {
-    public class FixedAssetRepository :BaseRepository<FixedAsset>, IFixedAssetRepository
+    public class FixedAssetRepository : BaseRepository<FixedAsset>, IFixedAssetRepository
     {
-      
-        public FixedAssetRepository(IConfiguration configuration):base(configuration)
+
+        public FixedAssetRepository(IConfiguration configuration) : base(configuration)
         {
-           
+
         }
 
         /// <summary>
@@ -20,17 +20,17 @@ namespace MISA.Infrastructure.Repository
         /// </summary>
         /// <param name="fixedAssetCode"></param>
         /// <returns></returns>
-        public bool CheckFixedAssetExist(string fixedAssetCode, Guid id,int mode)
+        public bool CheckFixedAssetExist(string fixedAssetCode, Guid id, int mode)
         {
             var sqlQueryCheckDuplicateCode = "";
             if (mode == 1)
             {
-             sqlQueryCheckDuplicateCode = $"SELECT FixedAssetCode FROM FixedAsset WHERE fixed_asset_code=@fixedAssetCode";
+                sqlQueryCheckDuplicateCode = $"SELECT FixedAssetCode FROM FixedAsset WHERE fixed_asset_code=@fixedAssetCode";
             }
 
-            if(mode == 2)
+            if (mode == 2)
             {
-             sqlQueryCheckDuplicateCode = $"SELECT FixedAssetCode FROM FixedAsset WHERE FixedAssetCode=@fixedAssetCode AND FixedAssetId <> @FixedAssetId";
+                sqlQueryCheckDuplicateCode = $"SELECT FixedAssetCode FROM FixedAsset WHERE FixedAssetCode=@fixedAssetCode AND FixedAssetId <> @FixedAssetId";
             }
             // Kiểm tra xem mã đã tồn tại hay chưa?
             var parametersDup = new DynamicParameters();
@@ -105,20 +105,20 @@ namespace MISA.Infrastructure.Repository
             parameters.Add("@fixed_asset_id", fixedAsset.FixedAssetId);
             parameters.Add("@fixed_asset_code", fixedAsset.FixedAssetCode);
             parameters.Add("@fixed_asset_name", fixedAsset.FixedAssetName);
-            parameters.Add("@department_id", fixedAsset.department_id);
-            parameters.Add("@department_code", fixedAsset.department_code);
-            parameters.Add("@department_name", fixedAsset.department_name);
-            parameters.Add("@fixed_asset_category_id", fixedAsset.fixed_asset_category_id);
-            parameters.Add("@fixed_asset_category_code", fixedAsset.fixed_asset_category_code);
-            parameters.Add("@fixed_asset_category_name", fixedAsset.fixed_asset_category_name);
-            parameters.Add("@purchase_date", fixedAsset.purchase_date);
-            parameters.Add("@cost", fixedAsset.cost);
-            parameters.Add("@quantity", fixedAsset.quantity);
-            parameters.Add("@depreciation_rate", fixedAsset.depreciation_rate);
-            parameters.Add("@tracked_year", fixedAsset.tracked_year);
-            parameters.Add("@life_time", fixedAsset.life_time);
-            parameters.Add("@production_year", fixedAsset.production_year);
-         
+            parameters.Add("@department_id", fixedAsset.DepartmentId);
+            parameters.Add("@department_code", fixedAsset.DepartmentCode);
+            parameters.Add("@department_name", fixedAsset.DepartmentName);
+            parameters.Add("@fixed_asset_category_id", fixedAsset.FixedAssetCategoryId);
+            parameters.Add("@fixed_asset_category_code", fixedAsset.FixedAssetCategoryCode);
+            parameters.Add("@fixed_asset_category_name", fixedAsset.FixedAssetCategoryName);
+            parameters.Add("@purchase_date", fixedAsset.PurchaseDate);
+            parameters.Add("@cost", fixedAsset.Cost);
+            parameters.Add("@quantity", fixedAsset.Quantity);
+            parameters.Add("@depreciation_rate", fixedAsset.DepreciationRate);
+            parameters.Add("@tracked_year", fixedAsset.TrackedYear);
+            parameters.Add("@life_time", fixedAsset.Lifetime);
+            parameters.Add("@production_year", fixedAsset.ProductionYear);
+
             var res = _sqlConnection.Execute(sqlQuery, param: parameters);
             return res;
         }
@@ -131,19 +131,19 @@ namespace MISA.Infrastructure.Repository
             parameters.Add("@fixed_asset_id", id);
             parameters.Add("@fixed_asset_code", fixedAsset.FixedAssetCode);
             parameters.Add("@fixed_asset_name", fixedAsset.FixedAssetName);
-            parameters.Add("@department_id", fixedAsset.department_id);
-            parameters.Add("@department_code", fixedAsset.department_code);
-            parameters.Add("@department_name", fixedAsset.department_name);
-            parameters.Add("@fixed_asset_category_id", fixedAsset.fixed_asset_category_id);
-            parameters.Add("@fixed_asset_category_code", fixedAsset.fixed_asset_category_code);
-            parameters.Add("@fixed_asset_category_name", fixedAsset.fixed_asset_category_name);
-            parameters.Add("@purchase_date", fixedAsset.purchase_date);
-            parameters.Add("@cost", fixedAsset.cost);
-            parameters.Add("@quantity", fixedAsset.quantity);
-            parameters.Add("@depreciation_rate", fixedAsset.depreciation_rate);
-            parameters.Add("@tracked_year", fixedAsset.tracked_year);
-            parameters.Add("@life_time", fixedAsset.life_time);
-            parameters.Add("@production_year", fixedAsset.production_year);
+            parameters.Add("@department_id", fixedAsset.DepartmentId);
+            parameters.Add("@department_code", fixedAsset.DepartmentCode);
+            parameters.Add("@department_name", fixedAsset.DepartmentName);
+            parameters.Add("@fixed_asset_category_id", fixedAsset.FixedAssetCategoryId);
+            parameters.Add("@fixed_asset_category_code", fixedAsset.FixedAssetCategoryCode);
+            parameters.Add("@fixed_asset_category_name", fixedAsset.FixedAssetCategoryName);
+            parameters.Add("@purchase_date", fixedAsset.PurchaseDate);
+            parameters.Add("@cost", fixedAsset.Cost);
+            parameters.Add("@quantity", fixedAsset.Quantity);
+            parameters.Add("@depreciation_rate", fixedAsset.DepreciationRate);
+            parameters.Add("@tracked_year", fixedAsset.TrackedYear);
+            parameters.Add("@life_time", fixedAsset.Lifetime);
+            parameters.Add("@production_year", fixedAsset.ProductionYear);
 
             var res = _sqlConnection.Execute(sqlQuery, param: parameters);
             return res;

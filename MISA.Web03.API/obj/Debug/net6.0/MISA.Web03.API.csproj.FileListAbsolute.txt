@@ -36,3 +36,41 @@ D:\MISA\HCSN-project\API\MISA.Web03.API\bin\Debug\net6.0\Microsoft.AspNetCore.Js
 D:\MISA\HCSN-project\API\MISA.Web03.API\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 D:\MISA\HCSN-project\API\MISA.Web03.API\bin\Debug\net6.0\Newtonsoft.Json.dll
 D:\MISA\HCSN-project\API\MISA.Web03.API\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\bin\Debug\net6.0\.filenesting.json
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\bin\Debug\net6.0\appsettings.Development.json
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\bin\Debug\net6.0\appsettings.json
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\bin\Debug\net6.0\MISA.Web03.API.exe
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\bin\Debug\net6.0\MISA.Web03.API.deps.json
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\bin\Debug\net6.0\MISA.Web03.API.runtimeconfig.json
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\bin\Debug\net6.0\MISA.Web03.API.dll
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\bin\Debug\net6.0\MISA.Web03.API.pdb
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\bin\Debug\net6.0\Dapper.dll
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\bin\Debug\net6.0\Microsoft.AspNetCore.JsonPatch.dll
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\bin\Debug\net6.0\Microsoft.OpenApi.dll
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\bin\Debug\net6.0\MySqlConnector.dll
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\bin\Debug\net6.0\Newtonsoft.Json.dll
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\bin\Debug\net6.0\Swashbuckle.AspNetCore.Swagger.dll
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerGen.dll
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\bin\Debug\net6.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\bin\Debug\net6.0\MISA.Core.dll
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\bin\Debug\net6.0\MISA.Infrastructure.dll
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\bin\Debug\net6.0\MISA.Core.pdb
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\bin\Debug\net6.0\MISA.Infrastructure.pdb
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\obj\Debug\net6.0\MISA.Web03.API.csproj.AssemblyReference.cache
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\obj\Debug\net6.0\MISA.Web03.API.GeneratedMSBuildEditorConfig.editorconfig
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\obj\Debug\net6.0\MISA.Web03.API.AssemblyInfoInputs.cache
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\obj\Debug\net6.0\MISA.Web03.API.AssemblyInfo.cs
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\obj\Debug\net6.0\MISA.Web03.API.csproj.CoreCompileInputs.cache
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\obj\Debug\net6.0\MISA.Web03.API.MvcApplicationPartsAssemblyInfo.cs
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\obj\Debug\net6.0\MISA.Web03.API.MvcApplicationPartsAssemblyInfo.cache
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\obj\Debug\net6.0\staticwebassets.build.json
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\obj\Debug\net6.0\staticwebassets.development.json
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\obj\Debug\net6.0\scopedcss\bundle\MISA.Web03.API.styles.css
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\obj\Debug\net6.0\MISA.Web03.API.csproj.CopyComplete
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\obj\Debug\net6.0\MISA.Web03.API.dll
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\obj\Debug\net6.0\refint\MISA.Web03.API.dll
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\obj\Debug\net6.0\MISA.Web03.API.pdb
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\obj\Debug\net6.0\MISA.Web03.API.genruntimeconfig.cache
+E:\MISA\HCSN-Bài tập\API\MISA.Web03.API\obj\Debug\net6.0\ref\MISA.Web03.API.dll

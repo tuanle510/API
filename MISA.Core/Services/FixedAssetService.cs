@@ -32,19 +32,19 @@ namespace MISA.Core.Services
             {
                 validateErrorsMsg.Add("Tên tài sản không được trùng");
             }
-            if (string.IsNullOrEmpty(fixedAsset.department_code))
+            if (string.IsNullOrEmpty(fixedAsset.DepartmentCode))
             {
                 validateErrorsMsg.Add("Mã bộ phận sử dụng không được để trống");
             }
-            if (string.IsNullOrEmpty(fixedAsset.department_name))
+            if (string.IsNullOrEmpty(fixedAsset.DepartmentName))
             {
                 validateErrorsMsg.Add("Tên bộ phận sử dụng không được để trống");
             }
-            if (string.IsNullOrEmpty(fixedAsset.fixed_asset_category_code))
+            if (string.IsNullOrEmpty(fixedAsset.FixedAssetCategoryCode))
             {
                 validateErrorsMsg.Add("Mã loại tài sản không được để trống");
             }
-            if (string.IsNullOrEmpty(fixedAsset.fixed_asset_category_name))
+            if (string.IsNullOrEmpty(fixedAsset.FixedAssetCategoryName))
             {
                 validateErrorsMsg.Add("Tên loại tài sản không được để trống");
             }
@@ -85,19 +85,19 @@ namespace MISA.Core.Services
             {
                 validateErrorsMsg.Add("Tên tài sản không được trùng");
             }
-            if (string.IsNullOrEmpty(fixedAsset.department_code))
+            if (string.IsNullOrEmpty(fixedAsset.DepartmentCode))
             {
                 validateErrorsMsg.Add("Mã bộ phận sử dụng không được để trống");
             }
-            if (string.IsNullOrEmpty(fixedAsset.department_name))
+            if (string.IsNullOrEmpty(fixedAsset.DepartmentName))
             {
                 validateErrorsMsg.Add("Tên bộ phận sử dụng không được để trống");
             }
-            if (string.IsNullOrEmpty(fixedAsset.fixed_asset_category_code))
+            if (string.IsNullOrEmpty(fixedAsset.FixedAssetCategoryCode))
             {
                 validateErrorsMsg.Add("Mã loại tài sản không được để trống");
             }
-            if (string.IsNullOrEmpty(fixedAsset.fixed_asset_category_name))
+            if (string.IsNullOrEmpty(fixedAsset.FixedAssetCategoryName))
             {
                 validateErrorsMsg.Add("Tên loại tài sản không được để trống");
             }

@@ -13,3 +13,18 @@ D:\MISA\HCSN-project\API\MISA.Infrastructure\obj\Debug\net6.0\MISA.Infrastructur
 D:\MISA\HCSN-project\API\MISA.Infrastructure\obj\Debug\net6.0\refint\MISA.Infrastructure.dll
 D:\MISA\HCSN-project\API\MISA.Infrastructure\obj\Debug\net6.0\MISA.Infrastructure.pdb
 D:\MISA\HCSN-project\API\MISA.Infrastructure\obj\Debug\net6.0\ref\MISA.Infrastructure.dll
+E:\MISA\HCSN-Bài tập\API\MISA.Infrastructure\bin\Debug\net6.0\MISA.Infrastructure.deps.json
+E:\MISA\HCSN-Bài tập\API\MISA.Infrastructure\bin\Debug\net6.0\MISA.Infrastructure.dll
+E:\MISA\HCSN-Bài tập\API\MISA.Infrastructure\bin\Debug\net6.0\MISA.Infrastructure.pdb
+E:\MISA\HCSN-Bài tập\API\MISA.Infrastructure\bin\Debug\net6.0\MISA.Core.dll
+E:\MISA\HCSN-Bài tập\API\MISA.Infrastructure\bin\Debug\net6.0\MISA.Core.pdb
+E:\MISA\HCSN-Bài tập\API\MISA.Infrastructure\obj\Debug\net6.0\MISA.Infrastructure.csproj.AssemblyReference.cache
+E:\MISA\HCSN-Bài tập\API\MISA.Infrastructure\obj\Debug\net6.0\MISA.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+E:\MISA\HCSN-Bài tập\API\MISA.Infrastructure\obj\Debug\net6.0\MISA.Infrastructure.AssemblyInfoInputs.cache
+E:\MISA\HCSN-Bài tập\API\MISA.Infrastructure\obj\Debug\net6.0\MISA.Infrastructure.AssemblyInfo.cs
+E:\MISA\HCSN-Bài tập\API\MISA.Infrastructure\obj\Debug\net6.0\MISA.Infrastructure.csproj.CoreCompileInputs.cache
+E:\MISA\HCSN-Bài tập\API\MISA.Infrastructure\obj\Debug\net6.0\MISA.Infrastructure.csproj.CopyComplete
+E:\MISA\HCSN-Bài tập\API\MISA.Infrastructure\obj\Debug\net6.0\MISA.Infrastructure.dll
+E:\MISA\HCSN-Bài tập\API\MISA.Infrastructure\obj\Debug\net6.0\refint\MISA.Infrastructure.dll
+E:\MISA\HCSN-Bài tập\API\MISA.Infrastructure\obj\Debug\net6.0\MISA.Infrastructure.pdb
+E:\MISA\HCSN-Bài tập\API\MISA.Infrastructure\obj\Debug\net6.0\ref\MISA.Infrastructure.dll
