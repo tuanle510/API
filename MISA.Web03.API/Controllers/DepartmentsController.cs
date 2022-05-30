@@ -5,14 +5,14 @@ using MISA.Core.Interfaces.Respositories;
 
 namespace MISA.Web03.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
-    public class DepartmentController : ControllerBase
+    public class DepartmentsController : ControllerBase
     {
         IConfiguration _configuration;
         IDepartmentRepository _departmentRepository;
 
-        public DepartmentController(IConfiguration configuration, IDepartmentRepository departmentRepository)
+        public DepartmentsController(IConfiguration configuration, IDepartmentRepository departmentRepository)
         {
             _configuration = configuration;
             _departmentRepository = departmentRepository;

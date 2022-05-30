@@ -7,66 +7,32 @@ using System.Text.RegularExpressions;
 
 namespace MISA.Infrastructure.Repository
 {
-    public class FixedAssetRepository :BaseRepository<FixedAsset>, IFixedAssetRepository
+    public class FixedAssetRepository : BaseRepository<FixedAsset>, IFixedAssetRepository
     {
-      
-        public FixedAssetRepository(IConfiguration configuration):base(configuration)
+
+        public FixedAssetRepository(IConfiguration configuration) : base(configuration)
         {
-           
+
         }
 
         /// <summary>
-        /// Kiểm tra dữ lệu có đã tồn tại trong hệ thống hay chưa
+        /// Xóa nhiều bản ghi
         /// </summary>
-        /// <param name="fixedAssetCode"></param>
+        /// <param name="fixedAssetId"></param>
         /// <returns></returns>
-        public bool CheckFixedAssetExist(string fixedAssetCode, Guid id,int mode)
+        /// <exception cref="NotImplementedException"></exception>
+        public int DeleteMulti(Guid[] fixedAssetIdList)
         {
-            var sqlQueryCheckDuplicateCode = "";
-            if (mode == 1)
+            // Tạo dạy danh dách id cần xóa để truyền vào câu lệnh sql
+            var idList = "";
+            foreach (var item in fixedAssetIdList)
             {
-             sqlQueryCheckDuplicateCode = $"SELECT FixedAssetCode FROM FixedAsset WHERE fixed_asset_code=@fixedAssetCode";
+                idList += $"'{item}',";
             }
-
-            if(mode == 2)
-            {
-             sqlQueryCheckDuplicateCode = $"SELECT FixedAssetCode FROM FixedAsset WHERE FixedAssetCode=@fixedAssetCode AND FixedAssetId <> @FixedAssetId";
-            }
-            // Kiểm tra xem mã đã tồn tại hay chưa?
-            var parametersDup = new DynamicParameters();
-            parametersDup.Add("@fixedAssetCode", fixedAssetCode);
-            parametersDup.Add("@fixedAssetId", id);
-            var fixedAssetCodeDuplicate = _sqlConnection.QueryFirstOrDefault<string>(sqlQueryCheckDuplicateCode, param: parametersDup);
-
-            if (fixedAssetCodeDuplicate != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public int Delete(Guid id)
-        {
-            //Thực hiện xóa dữ liệu
-            var sqlQuery = $"DELETE FROM fixed_asset WHERE fixed_asset_id = @fixedAssetId";
-            var parameters = new DynamicParameters();
-            parameters.Add("@fixedAssetId", id);
-            var res = _sqlConnection.Execute(sqlQuery, param: parameters);
+            idList = idList.Remove(idList.Length - 1, 1);
+            var sqlQuerry = $"DELETE FROM FixedAsset WHERE FixedAssetId IN ({idList})";
+            var res = _sqlConnection.Execute(sqlQuerry);
             return res;
-        }
-
-        public FixedAsset GetById(Guid id)
-        {
-            // Thực hiện lấy dữ liệu
-            var sqlQuery = $"SELECT * FROM fixed_asset WHERE fixed_asset_id = @fixed_asset_id";
-            var parameters = new DynamicParameters();
-            parameters.Add("@fixed_asset_id", id);
-            var asset = _sqlConnection.QueryFirstOrDefault<FixedAsset>(sqlQuery, param: parameters);
-            //Trả về dữ liệu cho clien
-            return asset;
         }
 
         /// <summary>
@@ -75,78 +41,124 @@ namespace MISA.Infrastructure.Repository
         /// <returns></returns>
         public string GetNewFixedAssetCode()
         {
+            var newCode = "";
+            // Khởi tạo câu truy vấn lấy giá trị fixedAssetCode gần nhất (theo thời gian tạo): 
+            var sqlQuery = "SELECT FixedAssetCode FROM FixedAsset ORDER BY CreatedDate DESC";
 
-            var sqlQuery = "SELECT FixedAssetCode FROM FixedAsset ORDER BY created_date DESC";
-
+            // Thực hiện truy vấn lấy về mã gần nhất: 
             var lastCode = _sqlConnection.QueryFirstOrDefault<String>(sqlQuery);
-            //var strCode = lastCode.Substring(0, 2);
-            //var numberCode = int.Parse(lastCode.Substring(2));
-            //Regex.Match(subjectString, @"\d+").Value;
-            var newCode = lastCode.Substring(0, 2) + (int.Parse(lastCode.Substring(2)) + 1);
-            //var newCode = Regex.Match(lastCode, @"\d+").Value;
 
+            if (string.IsNullOrEmpty(lastCode))
+            {
+                newCode = "TS00001";
+            }
+            else
+            {
+                // Lấy ra tất cả các số ở cuối:
+                var match = new Regex(@"(\d+)*$").Match(lastCode).Value;
 
+                // Nếu không có số ở cuối thì tạo số bắt đầu từ 1:
+                if (match == "" || match == null)
+                {
+                    newCode = lastCode + 1;
+                }
+                // Nếu đã có số rồi thì cộng thêm 1: 
+                else
+                {
+                    // Thay phần số (nếu có) thành rỗng:
+                    var restPart = lastCode.Replace(match, "");
+                    // Tăng phần số lên 1 đơn vị: 
+                    var numberPart = (int.Parse(match) + 1).ToString($"D{match.Length}");
+                    // Ghép chuỗi:
+                    newCode = restPart + numberPart;
+                }
+            }
             return newCode;
         }
 
-        public List<FixedAsset> GetPaging(int pageIndex, int pageSize)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="FixedAssetFilter"></param>
+        /// <param name="FixedAssetCategoryName"></param>
+        /// <param name="DepartmentName"></param>
+        /// <returns></returns>
+        public List<FixedAsset> Filter( string? FixedAssetCategoryName, string? DepartmentName,string FixedAssetFilter , int pageIndex , int pageSize )
         {
-            throw new NotImplementedException();
+            // Nếu trả về null thì gắn vào giá trị "":
+            if(string.IsNullOrEmpty (FixedAssetFilter) )
+            {
+                FixedAssetFilter = "";
+            }
+            // Tính giá trị tổng offset:
+            var totalOffset = (pageIndex - 1) * pageSize;
+            // Khởi tạo câu truy vấn: 
+            var sqlQuery = "SELECT * FROM FixedAsset WHERE (FixedAssetName LIKE CONCAT('%',@FixedAssetFilter,'%') OR FixedAssetCode LIKE CONCAT('%',@FixedAssetFilter,'%')) ";
+
+            if (!string.IsNullOrEmpty(FixedAssetCategoryName))
+            {
+                sqlQuery += "AND FixedAssetCategoryName = @FixedAssetCategoryName ";
+            }
+
+            if (!string.IsNullOrEmpty(DepartmentName))
+            {
+                sqlQuery += "AND DepartmentName = @DepartmentName ";
+            }
+
+            sqlQuery += "ORDER BY CreatedDate DESC LIMIT @pageSize OFFSET @totalOffset";
+            var parameters = new DynamicParameters();
+            parameters.Add("@pageSize", pageSize);
+            parameters.Add("@totalOffset", totalOffset);
+            parameters.Add("@FixedAssetFilter", FixedAssetFilter);
+            parameters.Add("@FixedAssetCategoryName", FixedAssetCategoryName);
+            parameters.Add("@DepartmentName", DepartmentName);
+
+            // Thực hiện truy vấn: 
+            var FilterList = _sqlConnection.Query<FixedAsset>(sqlQuery, param: parameters);
+
+
+            return FilterList.ToList();
         }
 
-        public int Insert(FixedAsset fixedAsset)
+        /// <summary>
+        /// Lấy tổng số bản ghi tìm được
+        /// </summary>
+        /// <param name="FixedAssetCategoryName"></param>
+        /// <param name="DepartmentName"></param>
+        /// <param name="FixedAssetFilter"></param>
+        /// <returns></returns>
+        public int GetFixedAssetCount(string? FixedAssetCategoryName, string? DepartmentName, string FixedAssetFilter)
         {
-            //Tạo id mới
-            fixedAsset.FixedAssetId = Guid.NewGuid();
+            // Nếu trả về null thì gắn vào giá trị "":
+            if (string.IsNullOrEmpty(FixedAssetFilter))
+            {
+                FixedAssetFilter = "";
+            }
+            // Khởi tạo câu truy vấn: 
+            var sqlQuery = "SELECT * FROM FixedAsset WHERE (FixedAssetName LIKE CONCAT('%',@FixedAssetFilter,'%') OR FixedAssetCode LIKE CONCAT('%',@FixedAssetFilter,'%')) ";
 
-            // Thực hiện thêm mới dữ liệu
-            var sqlQuery = $"INSERT INTO FixedAsset(FixedAssetId,FixedAssetCode, FixedAssetName, department_id,  department_code, department_name, fixed_asset_category_id, fixed_asset_category_code,fixed_asset_category_name, purchase_date, cost, quantity, depreciation_rate, tracked_year, life_time , production_year) VALUES (@fixed_asset_id,@fixed_asset_code, @fixed_asset_name, @department_id,  @department_code, @department_name, @fixed_asset_category_id, @fixed_asset_category_code,@fixed_asset_category_name, @purchase_date, @cost, @quantity, @depreciation_rate, @tracked_year, @life_time , @production_year)";
+            if (!string.IsNullOrEmpty(FixedAssetCategoryName))
+            {
+                sqlQuery += "AND FixedAssetCategoryName = @FixedAssetCategoryName ";
+            }
+
+            if (!string.IsNullOrEmpty(DepartmentName))
+            {
+                sqlQuery += "AND DepartmentName = @DepartmentName ";
+            }
             var parameters = new DynamicParameters();
-            parameters.Add("@fixed_asset_id", fixedAsset.FixedAssetId);
-            parameters.Add("@fixed_asset_code", fixedAsset.FixedAssetCode);
-            parameters.Add("@fixed_asset_name", fixedAsset.FixedAssetName);
-            parameters.Add("@department_id", fixedAsset.department_id);
-            parameters.Add("@department_code", fixedAsset.department_code);
-            parameters.Add("@department_name", fixedAsset.department_name);
-            parameters.Add("@fixed_asset_category_id", fixedAsset.fixed_asset_category_id);
-            parameters.Add("@fixed_asset_category_code", fixedAsset.fixed_asset_category_code);
-            parameters.Add("@fixed_asset_category_name", fixedAsset.fixed_asset_category_name);
-            parameters.Add("@purchase_date", fixedAsset.purchase_date);
-            parameters.Add("@cost", fixedAsset.cost);
-            parameters.Add("@quantity", fixedAsset.quantity);
-            parameters.Add("@depreciation_rate", fixedAsset.depreciation_rate);
-            parameters.Add("@tracked_year", fixedAsset.tracked_year);
-            parameters.Add("@life_time", fixedAsset.life_time);
-            parameters.Add("@production_year", fixedAsset.production_year);
-         
-            var res = _sqlConnection.Execute(sqlQuery, param: parameters);
-            return res;
-        }
+    
+            parameters.Add("@FixedAssetFilter", FixedAssetFilter);
+            parameters.Add("@FixedAssetCategoryName", FixedAssetCategoryName);
+            parameters.Add("@DepartmentName", DepartmentName);
 
-        public int Update(Guid id, FixedAsset fixedAsset)
-        {
-            // Thực hiện thêm mới dữ liệu
-            var sqlQuery = $"UPDATE FixedAsset SET FixedAssetCode=@fixed_asset_code, FixedAssetName=@fixed_asset_name, department_id=@department_id,  department_code = @department_code, department_name = @department_name, fixed_asset_category_id=@fixed_asset_category_id, fixed_asset_category_code=@fixed_asset_category_code,fixed_asset_category_name=@fixed_asset_category_name, purchase_date=@purchase_date, cost=@cost, quantity=@quantity, depreciation_rate=@depreciation_rate, tracked_year=@tracked_year, life_time=@life_time , production_year=@production_year  WHERE fixed_asset_id = @fixed_asset_id";
-            var parameters = new DynamicParameters();
-            parameters.Add("@fixed_asset_id", id);
-            parameters.Add("@fixed_asset_code", fixedAsset.FixedAssetCode);
-            parameters.Add("@fixed_asset_name", fixedAsset.FixedAssetName);
-            parameters.Add("@department_id", fixedAsset.department_id);
-            parameters.Add("@department_code", fixedAsset.department_code);
-            parameters.Add("@department_name", fixedAsset.department_name);
-            parameters.Add("@fixed_asset_category_id", fixedAsset.fixed_asset_category_id);
-            parameters.Add("@fixed_asset_category_code", fixedAsset.fixed_asset_category_code);
-            parameters.Add("@fixed_asset_category_name", fixedAsset.fixed_asset_category_name);
-            parameters.Add("@purchase_date", fixedAsset.purchase_date);
-            parameters.Add("@cost", fixedAsset.cost);
-            parameters.Add("@quantity", fixedAsset.quantity);
-            parameters.Add("@depreciation_rate", fixedAsset.depreciation_rate);
-            parameters.Add("@tracked_year", fixedAsset.tracked_year);
-            parameters.Add("@life_time", fixedAsset.life_time);
-            parameters.Add("@production_year", fixedAsset.production_year);
+            // Thực hiện truy vấn: 
+            var ListCount = _sqlConnection.Query<FixedAsset>(sqlQuery, param: parameters);
 
-            var res = _sqlConnection.Execute(sqlQuery, param: parameters);
-            return res;
+
+            return ListCount.Count();
         }
     }
 }

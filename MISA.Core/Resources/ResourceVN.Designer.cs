@@ -68,5 +68,41 @@ namespace MISA.Core.Resources {
                 return ResourceManager.GetString("ErrorValidate_FixedAsset_Name_NotEmpty", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} đã tồn tại trong hệ thống.
+        /// </summary>
+        public static string ErrorValidate_PropertyDuplicate {
+            get {
+                return ResourceManager.GetString("ErrorValidate_PropertyDuplicate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thông tin {0} không được vượt quá {1} ký tự.
+        /// </summary>
+        public static string ErrorValidate_ProperyMaxLength {
+            get {
+                return ResourceManager.GetString("ErrorValidate_ProperyMaxLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thông tin {0} không được phép để trống.
+        /// </summary>
+        public static string ErrorValidate_ProperyNottNull {
+            get {
+                return ResourceManager.GetString("ErrorValidate_ProperyNottNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dữ liệu đầu vào không hợp lệ.
+        /// </summary>
+        public static string ErrorValidate_VN {
+            get {
+                return ResourceManager.GetString("ErrorValidate_VN", resourceCulture);
+            }
+        }
     }
 }

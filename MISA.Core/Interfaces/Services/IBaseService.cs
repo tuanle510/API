@@ -8,12 +8,21 @@ namespace MISA.Core.Interfaces.Services
 {
     public interface IBaseService<T>
     {
+
         /// <summary>
-        /// Xử lí nghệp vụ khi thêm mới đối tượng
+        /// Xử lí nghiệp vụ chung khi thêm mới đối tượng
         /// </summary>
-        /// <param></param>
-        /// <returns>Số lượng bản ghi thêm mới vào Database</returns>
-        /// CreatedBy: LTTUAN (10.05.2022)
+        /// <param name="entity"> Đối tượng thêm mới </param>
+        /// <returns> Số lượng bản ghi </returns>
+        /// Created By: LTTUAN (17.05.2022)
         int InsertService(T entity);
+
+       /// <summary>
+       /// Xử lí nghiệp vụ khi sửa dối tượng
+       /// </summary>
+       /// <param name="entityId"> Id của đối tượng </param>
+       /// <param name="entity"> đối tượng đã sửa </param>
+       /// <returns></returns>
+        int UpdateService(Guid entityId , T entity);
     }
 }

@@ -41,6 +41,7 @@ builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
  
 
 builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+builder.Services.AddScoped(typeof(IBaseService<>), typeof(BaseService<>));
 
 var app = builder.Build(); 
 

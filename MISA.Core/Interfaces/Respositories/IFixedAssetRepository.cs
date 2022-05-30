@@ -13,14 +13,33 @@ namespace MISA.Core.Interfaces.Respositories
 
         string GetNewFixedAssetCode();
 
-        List<FixedAsset> GetPaging(int pageIndex, int pageSize);
+        /// <summary>
+        /// Xử lí xóa nhiều
+        /// </summary>
+        /// <param name="fixedAssetIdList"> Danh sách id gửi lên từ body </param>
+        /// <returns> Số bản ghi xóa thành công </returns>
+        int DeleteMulti(Guid[] fixedAssetIdList);
 
         /// <summary>
-        /// 
+        /// xử lí phân trang, filtter
         /// </summary>
-        /// <param name="fixedAssetCode"></param>
-        /// <returns>true - đã tồn tại, false - chưa tồn tại</returns>
-        bool CheckFixedAssetExist(string fixedAssetCode, Guid id, int mode);
+        /// <param name="FixedAssetCategoryName"> Tên loại tài sản </param>
+        /// <param name="DepartmentName"> Tên bộ phận sử dụng </param>
+        /// <param name="FixedAssetFilter"> Input filter </param>
+        /// <param name="pageIndex"> Số trang </param>
+        /// <param name="pageSize"> Sô bản ghi trong 1 trang </param>
+        /// <returns> Trả về danh sách đã filter và phân trang </returns>
+        List<FixedAsset> Filter( string? FixedAssetCategoryName, string? DepartmentName,string FixedAssetFilter,  int pageIndex, int pageSize );
 
+
+        /// <summary>
+        /// Lấy tổng số bản ghi tìm được
+        /// </summary>
+        /// <param name="FixedAssetCategoryName"></param>
+        /// <param name="DepartmentName"></param>
+        /// <param name="FixedAssetFilter"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        int GetFixedAssetCount(string? FixedAssetCategoryName, string? DepartmentName, string FixedAssetFilter);
     }
 }

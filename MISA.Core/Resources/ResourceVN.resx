@@ -120,4 +120,16 @@
   <data name="ErrorValidate_FixedAsset_Name_NotEmpty" xml:space="preserve">
     <value>Tên tài sản không được phép để trống</value>
   </data>
+  <data name="ErrorValidate_PropertyDuplicate" xml:space="preserve">
+    <value>{0} đã tồn tại trong hệ thống</value>
+  </data>
+  <data name="ErrorValidate_ProperyMaxLength" xml:space="preserve">
+    <value>Thông tin {0} không được vượt quá {1} ký tự</value>
+  </data>
+  <data name="ErrorValidate_ProperyNottNull" xml:space="preserve">
+    <value>Thông tin {0} không được phép để trống</value>
+  </data>
+  <data name="ErrorValidate_VN" xml:space="preserve">
+    <value>Dữ liệu đầu vào không hợp lệ</value>
+  </data>
 </root>

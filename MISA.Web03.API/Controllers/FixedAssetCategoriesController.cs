@@ -6,13 +6,13 @@ using MISA.Core.Interfaces.Respositories;
 
 namespace MISA.Web03.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
-    public class FixedAssetCategoryController : ControllerBase
+    public class FixedAssetCategoriesController : ControllerBase
     {
         IConfiguration _configuration;
         IFixedAssetCategoryRepository _fixedAssetCategoryRepository;
-        public FixedAssetCategoryController(IConfiguration configuration, IFixedAssetCategoryRepository fixedAssetCategoryRepository)
+        public FixedAssetCategoriesController(IConfiguration configuration, IFixedAssetCategoryRepository fixedAssetCategoryRepository)
         {
             _configuration = configuration;
             _fixedAssetCategoryRepository = fixedAssetCategoryRepository;

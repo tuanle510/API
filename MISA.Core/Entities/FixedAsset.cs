@@ -5,47 +5,148 @@ namespace MISA.Core.Entities
     public class FixedAsset: BaseEntity
     {
         /// <summary>
+        /// Id tài sản 
         /// Khóa chính
         /// </summary>
         [PrimaryKey]
+        [IsNotNullOrEmpty]
         public Guid FixedAssetId { get; set; }
 
+        /// <summary>
+        /// Mã tài sản
+        /// </summary>
+        [IsNotNullOrEmpty]
+        [FriendlyName("Mã tài sản")]
+        [MaxLength(50)]
         public string FixedAssetCode { get; set; }
 
+        /// <summary>
+        /// Tên tài sản
+        /// </summary>
+        [IsNotNullOrEmpty]
+        [FriendlyName("Tên tài sản") ]
+        [MaxLength(255)]
         public string FixedAssetName { get; set; }
 
-        public Guid? department_id { get; set; }
+        /// <summary>
+        /// Id bộ phận sử dụng
+        /// </summary>
+        public Guid? DepartmentId { get; set; }
 
-        public string department_code { get; set; }
+        /// <summary>
+        /// Mã bộ phận sử dụng
+        /// </summary>
+        [IsNotNullOrEmpty]
+        [FriendlyName("Mã bộ phận sử dụng")]
+        [MaxLength(50)]
+        public string DepartmentCode { get; set; }
 
-        public string department_name { get; set; }
 
-        public Guid? fixed_asset_category_id { get; set; }
+        /// <summary>
+        /// Tên bộ phận sử dụng
+        /// </summary>
+        [IsNotNullOrEmpty]
+        [FriendlyName("Tên bộ phận sử dụng")]
+        [MaxLength(255)]
+        public string DepartmentName { get; set; }
 
-        public string fixed_asset_category_code { get; set; }
+        /// <summary>
+        /// Id Loại tài sản
+        /// </summary>
+        public Guid? FixedAssetCategoryId { get; set; }
 
-        public string fixed_asset_category_name { get; set; }
+        /// <summary>
+        /// Mã loại tài sản
+        /// </summary>
+        [IsNotNullOrEmpty]
+        [FriendlyName("Mã loại tài sản")]
+        [MaxLength(50)]
+        public string FixedAssetCategoryCode { get; set; }
 
-        public DateTime? purchase_date { get; set; }
+        /// <summary>
+        /// Tên loại tài sản
+        /// </summary>
+        [IsNotNullOrEmpty]
+        [FriendlyName("Tên loại tài sản")]
+        [MaxLength(255)]
+        public string FixedAssetCategoryName { get; set; }
 
-        public decimal cost { get; set; }
+        /// <summary>
+        /// Ngày mua
+        /// </summary>
+        [IsNotNullOrEmpty]
+        [FriendlyName("Ngày mua")]
+        [MaxLength(255)]
+        public DateTime? PurchaseDate { get; set; }
 
-        public int quantity { get; set; }
+        /// <summary>
+        /// Ngày bắt đầu sử dụng
+        /// </summary>
+        [IsNotNullOrEmpty]
+        [FriendlyName("Ngày bắt đầu sử dụng")]
+        [MaxLength(255)]
+        public DateTime? UseDate { get; set; }
 
-        public float depreciation_rate { get; set; }
+        /// <summary>
+        /// Lũy kế
+        /// </summary>
+        [FriendlyName("Lũy kế")]
+        [MaxLength(255)]
+        public decimal Accumulated { get; set; }
 
-        public int? tracked_year { get; set; }
+        /// <summary>
+        /// Nguyên giá
+        /// </summary>
+        [IsNotNullOrEmpty]
+        [FriendlyName("Nguyên giá")]
+        [MaxLength(255)]
+        public decimal Cost { get; set; }
 
-        public int life_time { get; set; }
+        /// <summary>
+        /// Số lượng
+        /// </summary>
+        [IsNotNullOrEmpty]
+        [FriendlyName("Số lượng")]
+        [MaxLength(255)]
+        public int Quantity { get; set; }
 
-        public int? production_year { get; set; }
+        /// <summary>
+        /// Tỷ lệ hao mòn
+        /// </summary>
+        [IsNotNullOrEmpty]
+        [FriendlyName("Tỷ lệ hao mòn ")]
+        [MaxLength(255)]
+        public float DepreciationRate { get; set; }
 
-        public DateTime created_date { get; set; }
-        //public Guid organization_id { get; set; }
+        /// <summary>
+        /// Giá trị hao mòn năm
+        /// </summary>
+        [IsNotNullOrEmpty]
+        [FriendlyName("Giá trị hao mòn năm")]
+        [MaxLength(255)]
+        public float DepreciationValue { get; set; }
 
-        //public string organization_code { get; set; }
+        /// <summary>
+        /// Năm bắt đầu theo dõi tài sản
+        /// </summary>
+        [IsNotNullOrEmpty]
+        [FriendlyName("Năm bắt đầu theo dõi tài sản")]
+        [MaxLength(255)]
+        public int? TrackedYear { get; set; }
 
-        //public string organization_name { get; set; }
+        /// <summary>
+        /// Số năm sử dụng
+        /// </summary>
+        [IsNotNullOrEmpty]
+        [FriendlyName("Số năm sử dụng")]
+        [MaxLength(255)]
+        public int LifeTime { get; set; }
+
+        /// <summary>
+        /// Năm sử dụng
+        /// </summary>
+        [FriendlyName("Năm sử dụng")]
+        public int? ProductionYear { get; set; }
 
     }
 }
