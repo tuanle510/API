@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MISA.Core.Exceptions;
 using MISA.Core.Interfaces.Respositories;
 using MISA.Core.Interfaces.Services;
@@ -7,6 +8,7 @@ using MISA.Core.Interfaces.Services;
 
 namespace MISA.Web03.API.Controllers
 {
+    [Authorize]
     [Route("api/v1/[controller]")]
     [ApiController]
     public abstract class MISABaseController<T> : ControllerBase

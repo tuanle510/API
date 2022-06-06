@@ -1,4 +1,5 @@
-﻿using MISA.Core.Interfaces.Respositories;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using MISA.Core.Interfaces.Respositories;
 using MISA.Core.Interfaces.Services;
 using MISA.Core.Services;
 using MISA.Infrastructure.Repository;
@@ -13,6 +14,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.ExpireTimeSpan = TimeSpan.FromDays(1);
+        options.SlidingExpiration = true;
+    });
+
 // Thêm Policy của CORS
 builder.Services.AddCors(options =>
 {
@@ -20,9 +28,12 @@ builder.Services.AddCors(options =>
         builder =>
         {
             builder
-            .AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader();
+            .WithOrigins(
+                    "http://localhost:8080") //Note:  The URL must be specified without a trailing slash (/).
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(_ => true)
+                .AllowCredentials();
         });
 
 });
@@ -38,12 +49,12 @@ builder.Services.AddScoped<IFixedAssetRepository, FixedAssetRepository>();
 builder.Services.AddScoped<IFixedAssetService, FixedAssetService>();
 builder.Services.AddScoped<IFixedAssetCategoryRepository, FixedAssetCategoryRepository>();
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
- 
+
 
 builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 builder.Services.AddScoped(typeof(IBaseService<>), typeof(BaseService<>));
 
-var app = builder.Build(); 
+var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -53,7 +64,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("AllowAll");
+
+app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapRazorPages();
+app.MapDefaultControllerRoute();
+
 
 app.MapControllers();
 

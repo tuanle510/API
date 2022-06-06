@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MISA.Core.Entities;
 using MISA.Core.Interfaces.Respositories;
 
@@ -8,6 +9,8 @@ namespace MISA.Web03.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
+    [Authorize]
+
     public class FixedAssetCategoriesController : ControllerBase
     {
         IConfiguration _configuration;
