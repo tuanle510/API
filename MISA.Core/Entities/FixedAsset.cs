@@ -85,7 +85,7 @@ namespace MISA.Core.Entities
         [IsNotNullOrEmpty]
         [FriendlyName("Ngày bắt đầu sử dụng")]
         [MaxLength(255)]
-        public DateTime? UseDate { get; set; }
+        public DateTime UseDate { get; set; }
 
         /// <summary>
         /// Lũy kế

@@ -23,6 +23,5 @@
         /// Mô tả
         /// </summary>
         public string? Description { get; set; }
-        //public string? OrganizationId { get; set; }
     }
 }

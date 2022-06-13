@@ -41,5 +41,12 @@ namespace MISA.Core.Interfaces.Respositories
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
         int GetFixedAssetCount(string? FixedAssetCategoryName, string? DepartmentName, string FixedAssetFilter);
+
+        /// <summary>
+        /// Lấy tất cả bản ghi còn lại (trừ những bản ghi được gửi lên)
+        /// </summary>
+        /// <returns></returns>
+        object GetRestFixedAssetList(Guid[] fixedAssetList);
+
     }
 }

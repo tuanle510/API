@@ -93,5 +93,20 @@ namespace MISA.Web03.API.Controllers
                return HandleException(ex);
             }
         }
+
+        [HttpGet("GetRestAsetList")]
+        public IActionResult GetRestAsetList([FromQuery] Guid[] fixedAssetList)
+        {
+            try
+            {
+                var res = _fixedAssetRepository.GetRestFixedAssetList(fixedAssetList);
+                return StatusCode(200, res);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

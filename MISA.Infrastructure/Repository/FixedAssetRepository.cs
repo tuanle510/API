@@ -160,5 +160,24 @@ namespace MISA.Infrastructure.Repository
 
             return ListCount.Count();
         }
+
+        public object GetRestFixedAssetList(Guid[] fixedAssetList)
+        {
+            // Thực hiện khai báo câu lệnh truy vấn SQL:
+            var sqlCommand = $"SELECT * FROM FixedAsset WHERE FixedAssetId NOT IN @fixedAssetList ORDER BY CreatedDate DESC";
+            var parameters = new DynamicParameters();
+            parameters.Add("@fixedAssetList", fixedAssetList);
+            // Thực hiện câu truy vấn:
+            var entities = _sqlConnection.Query<FixedAsset>(sqlCommand, param: parameters);
+
+            var res = new
+            {
+                FilterList = (List<FixedAsset>)entities.ToList(),
+                FilterCount = (int)entities.Count()
+            };
+
+            // Trả về dữ liệu dạng List:
+            return res;
+        }
     }
 }

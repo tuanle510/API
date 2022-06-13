@@ -8,7 +8,6 @@ using MISA.Core.Interfaces.Services;
 
 namespace MISA.Web03.API.Controllers
 {
-    [Authorize]
     [Route("api/v1/[controller]")]
     [ApiController]
     public abstract class MISABaseController<T> : ControllerBase
