@@ -77,16 +77,8 @@ namespace MISA.Web03.API.Controllers
             {
                 // List data đã phân trang:
                 var FilterList = _fixedAssetRepository.Filter( FixedAssetCategoryName, DepartmentName, FixedAssetFilter, pageIndex, pageSize);
-                // Tổng số bản ghi khi chưa phân trang: 
-                var FilterCount = _fixedAssetRepository.GetFixedAssetCount(FixedAssetCategoryName, DepartmentName, FixedAssetFilter);
-                // trả về sữ liệu
-                var res = new
-                {
-                    FilterList = FilterList,
-                    FilterCount = FilterCount
-                };
-                
-                return StatusCode(200, res);
+               
+                return StatusCode(200, FilterList);
             }
             catch (Exception ex)
             {
@@ -95,11 +87,11 @@ namespace MISA.Web03.API.Controllers
         }
 
         [HttpGet("GetRestAsetList")]
-        public IActionResult GetRestAsetList([FromQuery] Guid[] fixedAssetList)
+        public IActionResult GetRestAsetList([FromQuery] Guid[] fixedAssetList, int pageIndex = 1, int pageSize = 20)
         {
             try
             {
-                var res = _fixedAssetRepository.GetRestFixedAssetList(fixedAssetList);
+                var res = _fixedAssetRepository.GetRestFixedAssetList(fixedAssetList, pageIndex, pageSize);
                 return StatusCode(200, res);
             }
             catch (Exception)

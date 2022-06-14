@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "1at8iYD2nPZftu0jXkXtE++QlLmZmOjcF39s1Cb4ru44MOFaVimyoZkWaG4LXq4oMCn5aXiPGxGjTEpGINcL9A==",
+  "dgSpecHash": "a4tEPeLX1FLXbD3dQDRhkkSyPHHgEPwxBkgKwZAQSbUUbvKPri9t2MwRl6LWb4V/D7V9dwXt2/ujvvljTpjvRQ==",
   "success": true,
-  "projectFilePath": "E:\\MISA\\HCSN-Bài tập\\API\\MISA.Core\\MISA.Core.csproj",
+  "projectFilePath": "D:\\MISA\\HCSN-project\\API\\MISA.Core\\MISA.Core.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\dapper\\2.0.123\\dapper.2.0.123.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\mysqlconnector\\2.1.8\\mysqlconnector.2.1.8.nupkg.sha512"

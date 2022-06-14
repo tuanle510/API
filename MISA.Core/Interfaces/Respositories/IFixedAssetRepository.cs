@@ -29,18 +29,8 @@ namespace MISA.Core.Interfaces.Respositories
         /// <param name="pageIndex"> Số trang </param>
         /// <param name="pageSize"> Sô bản ghi trong 1 trang </param>
         /// <returns> Trả về danh sách đã filter và phân trang </returns>
-        List<FixedAsset> Filter( string? FixedAssetCategoryName, string? DepartmentName,string FixedAssetFilter,  int pageIndex, int pageSize );
+        object Filter( string? FixedAssetCategoryName, string? DepartmentName,string FixedAssetFilter,  int pageIndex, int pageSize );
 
-
-        /// <summary>
-        /// Lấy tổng số bản ghi tìm được
-        /// </summary>
-        /// <param name="FixedAssetCategoryName"></param>
-        /// <param name="DepartmentName"></param>
-        /// <param name="FixedAssetFilter"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        int GetFixedAssetCount(string? FixedAssetCategoryName, string? DepartmentName, string FixedAssetFilter);
 
         /// <summary>
         /// Lấy tất cả bản ghi còn lại (trừ những bản ghi được gửi lên)
