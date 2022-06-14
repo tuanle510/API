@@ -52,5 +52,11 @@ namespace MISA.Core.Interfaces.Respositories
         /// <param name="entityId"> Id đối tượng </param>
         /// <returns> true - đã bị trùng, false - không trùng </returns>
         bool CheckCodeExist(string entityCode, Guid? entityId);
+
+        /// <summary>
+        /// Xử lí tạo mã mới
+        /// </summary>
+        /// <returns></returns>
+        string GetNewCode();
     }
 }

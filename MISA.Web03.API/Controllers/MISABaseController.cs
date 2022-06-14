@@ -66,6 +66,24 @@ namespace MISA.Web03.API.Controllers
         }
 
         /// <summary>
+        /// Xử lí tạo mã mới
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetNewCode")]
+        public IActionResult GetNewCode()
+        {
+            try
+            {
+                var newCode = _baseRepository.GetNewCode();
+                return Ok(newCode);
+            }
+            catch (Exception ex)
+            {
+                return HandleException(ex);
+            }
+        }
+
+        /// <summary>
         /// Xử lí thêm mới dữ liệu
         /// </summary>
         /// <param name="entity"></param>

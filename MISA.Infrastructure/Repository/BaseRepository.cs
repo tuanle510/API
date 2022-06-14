@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace MISA.Infrastructure.Repository
@@ -183,6 +184,45 @@ namespace MISA.Infrastructure.Repository
             {
                 return false;
             }
+        }
+
+        public string GetNewCode()
+        {
+            var newCode = "";
+            // Khởi tạo câu truy vấn lấy giá trị fixedAssetCode gần nhất (theo thời gian tạo): 
+            var sqlQuery = $"SELECT {_tableName}Code FROM {_tableName} ORDER BY CreatedDate DESC";
+
+            // Thực hiện truy vấn lấy về mã gần nhất: 
+            var lastCode = _sqlConnection.QueryFirstOrDefault<String>(sqlQuery);
+
+            // Nếu chưa có mà nào => gán luôn bằng "MA0001"
+            if (string.IsNullOrEmpty(lastCode))
+            {
+                newCode = "MA00001";
+            }
+            // Nếu có mã trước đó rồi => tạo mã mới
+            else
+            {
+                // Lấy ra tất cả các số ở cuối:
+                var match = new Regex(@"(\d+)*$").Match(lastCode).Value;
+
+                // Nếu không có số ở cuối thì tạo số bắt đầu từ 1:
+                if (match == "" || match == null)
+                {
+                    newCode = lastCode + 1;
+                }
+                // Nếu đã có số rồi thì cộng thêm 1: 
+                else
+                {
+                    // Thay phần số (nếu có) thành rỗng:
+                    var restPart = lastCode.Replace(match, "");
+                    // Tăng phần số lên 1 đơn vị: 
+                    var numberPart = (int.Parse(match) + 1).ToString($"D{match.Length}");
+                    // Ghép chuỗi:
+                    newCode = restPart + numberPart;
+                }
+            }
+            return newCode;
         }
     }
 }

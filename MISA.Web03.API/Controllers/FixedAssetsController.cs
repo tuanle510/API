@@ -26,20 +26,20 @@ namespace MISA.Web03.API.Controllers
         /// Xử lí tạo mã tài sản mới
         /// </summary>
         /// <returns></returns>
-        [HttpGet("NewFixedAssetCode")]
-        public IActionResult GetNewAssetCode()
-        {
-            try
-            {
-                var newFixedAssetCode = _fixedAssetRepository.GetNewFixedAssetCode();
-                return Ok(newFixedAssetCode);
-            }
-            catch (Exception ex)
-            {
+        //[HttpGet("NewFixedAssetCode")]
+        //public IActionResult GetNewAssetCode()
+        //{
+        //    try
+        //    {
+        //        var newFixedAssetCode = _fixedAssetRepository.GetNewFixedAssetCode();
+        //        return Ok(newFixedAssetCode);
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                return HandleException(ex);
-            }
-        }
+        //        return HandleException(ex);
+        //    }
+        //}
 
         /// <summary>
         /// Xử lí xóa nhiều

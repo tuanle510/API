@@ -9,9 +9,9 @@ namespace MISA.Core.Interfaces.Respositories
 {
     public interface IFixedAssetRepository: IBaseRepository<FixedAsset>
     {
-        FixedAsset GetById(Guid id);
+        //FixedAsset GetById(Guid id);
 
-        string GetNewFixedAssetCode();
+        //string GetNewFixedAssetCode();
 
         /// <summary>
         /// Xử lí xóa nhiều
@@ -46,7 +46,7 @@ namespace MISA.Core.Interfaces.Respositories
         /// Lấy tất cả bản ghi còn lại (trừ những bản ghi được gửi lên)
         /// </summary>
         /// <returns></returns>
-        object GetRestFixedAssetList(Guid[] fixedAssetList);
+        object GetRestFixedAssetList(Guid[] fixedAssetList, int pageIndex, int pageSize);
 
     }
 }

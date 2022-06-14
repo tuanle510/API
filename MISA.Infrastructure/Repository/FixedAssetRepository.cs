@@ -39,42 +39,44 @@ namespace MISA.Infrastructure.Repository
         /// Xử lí tạo ra mã mới
         /// </summary>
         /// <returns></returns>
-        public string GetNewFixedAssetCode()
-        {
-            var newCode = "";
-            // Khởi tạo câu truy vấn lấy giá trị fixedAssetCode gần nhất (theo thời gian tạo): 
-            var sqlQuery = "SELECT FixedAssetCode FROM FixedAsset ORDER BY CreatedDate DESC";
+        //public string GetNewFixedAssetCode()
+        //{
+        //    var newCode = "";
+        //    // Khởi tạo câu truy vấn lấy giá trị fixedAssetCode gần nhất (theo thời gian tạo): 
+        //    var sqlQuery = "SELECT FixedAssetCode FROM FixedAsset ORDER BY CreatedDate DESC";
 
-            // Thực hiện truy vấn lấy về mã gần nhất: 
-            var lastCode = _sqlConnection.QueryFirstOrDefault<String>(sqlQuery);
+        //    // Thực hiện truy vấn lấy về mã gần nhất: 
+        //    var lastCode = _sqlConnection.QueryFirstOrDefault<String>(sqlQuery);
 
-            if (string.IsNullOrEmpty(lastCode))
-            {
-                newCode = "TS00001";
-            }
-            else
-            {
-                // Lấy ra tất cả các số ở cuối:
-                var match = new Regex(@"(\d+)*$").Match(lastCode).Value;
+        //    // Nếu chưa có mà nào => gán luôn bằng "MA0001"
+        //    if (string.IsNullOrEmpty(lastCode))
+        //    {
+        //        newCode = "MA00001";
+        //    }
+        //    // Nếu có mã trước đó rồi => tạo mã mới
+        //    else
+        //    {
+        //        // Lấy ra tất cả các số ở cuối:
+        //        var match = new Regex(@"(\d+)*$").Match(lastCode).Value;
 
-                // Nếu không có số ở cuối thì tạo số bắt đầu từ 1:
-                if (match == "" || match == null)
-                {
-                    newCode = lastCode + 1;
-                }
-                // Nếu đã có số rồi thì cộng thêm 1: 
-                else
-                {
-                    // Thay phần số (nếu có) thành rỗng:
-                    var restPart = lastCode.Replace(match, "");
-                    // Tăng phần số lên 1 đơn vị: 
-                    var numberPart = (int.Parse(match) + 1).ToString($"D{match.Length}");
-                    // Ghép chuỗi:
-                    newCode = restPart + numberPart;
-                }
-            }
-            return newCode;
-        }
+        //        // Nếu không có số ở cuối thì tạo số bắt đầu từ 1:
+        //        if (match == "" || match == null)
+        //        {
+        //            newCode = lastCode + 1;
+        //        }
+        //        // Nếu đã có số rồi thì cộng thêm 1: 
+        //        else
+        //        {
+        //            // Thay phần số (nếu có) thành rỗng:
+        //            var restPart = lastCode.Replace(match, "");
+        //            // Tăng phần số lên 1 đơn vị: 
+        //            var numberPart = (int.Parse(match) + 1).ToString($"D{match.Length}");
+        //            // Ghép chuỗi:
+        //            newCode = restPart + numberPart;
+        //        }
+        //    }
+        //    return newCode;
+        //}
 
         /// <summary>
         /// 
@@ -85,10 +87,10 @@ namespace MISA.Infrastructure.Repository
         /// <param name="FixedAssetCategoryName"></param>
         /// <param name="DepartmentName"></param>
         /// <returns></returns>
-        public List<FixedAsset> Filter( string? FixedAssetCategoryName, string? DepartmentName,string FixedAssetFilter , int pageIndex , int pageSize )
+        public List<FixedAsset> Filter(string? FixedAssetCategoryName, string? DepartmentName, string FixedAssetFilter, int pageIndex, int pageSize)
         {
             // Nếu trả về null thì gắn vào giá trị "":
-            if(string.IsNullOrEmpty (FixedAssetFilter) )
+            if (string.IsNullOrEmpty(FixedAssetFilter))
             {
                 FixedAssetFilter = "";
             }
@@ -149,7 +151,7 @@ namespace MISA.Infrastructure.Repository
                 sqlQuery += "AND DepartmentName = @DepartmentName ";
             }
             var parameters = new DynamicParameters();
-    
+
             parameters.Add("@FixedAssetFilter", FixedAssetFilter);
             parameters.Add("@FixedAssetCategoryName", FixedAssetCategoryName);
             parameters.Add("@DepartmentName", DepartmentName);
@@ -161,19 +163,35 @@ namespace MISA.Infrastructure.Repository
             return ListCount.Count();
         }
 
-        public object GetRestFixedAssetList(Guid[] fixedAssetList)
+        public object GetRestFixedAssetList(Guid[] fixedAssetList, int pageIndex, int pageSize)
         {
-            // Thực hiện khai báo câu lệnh truy vấn SQL:
-            var sqlCommand = $"SELECT * FROM FixedAsset WHERE FixedAssetId NOT IN @fixedAssetList ORDER BY CreatedDate DESC";
+            var sqlCommand = "";
+            // Tính giá trị tổng offset:
+            var totalOffset = (pageIndex - 1) * pageSize;
+            if (fixedAssetList.Length == 0)
+            {
+                // Nếu không có list truyền vào:
+                sqlCommand = $"SELECT * FROM FixedAsset ORDER BY CreatedDate DESC";
+            }
+            else
+            {
+                // Nếu có list truyền vào:
+                sqlCommand = $"SELECT * FROM FixedAsset WHERE FixedAssetId NOT IN @fixedAssetList ORDER BY CreatedDate DESC";
+            }
             var parameters = new DynamicParameters();
             parameters.Add("@fixedAssetList", fixedAssetList);
             // Thực hiện câu truy vấn:
-            var entities = _sqlConnection.Query<FixedAsset>(sqlCommand, param: parameters);
+            var data = _sqlConnection.Query<FixedAsset>(sqlCommand, param: parameters);
 
+            parameters.Add("@pageSize", pageSize);
+            parameters.Add("@totalOffset", totalOffset);
+            sqlCommand += $" LIMIT @PageSize OFFSET @PageOffset";
+            
+            var count = _sqlConnection.Query<FixedAsset>(sqlCommand, parameters);
             var res = new
             {
-                FilterList = (List<FixedAsset>)entities.ToList(),
-                FilterCount = (int)entities.Count()
+                Data = (List<FixedAsset>)data.ToList(),
+                Count = (int)count.Count()
             };
 
             // Trả về dữ liệu dạng List:
