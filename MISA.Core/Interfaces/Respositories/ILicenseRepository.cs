@@ -9,5 +9,13 @@ namespace MISA.Core.Interfaces.Respositories
 {
     public interface ILicenseRepository : IBaseRepository<License>
     {
+        /// <summary>
+        /// Thêm mới chứng từ
+        /// </summary>
+        /// <param name="newLicense"></param>
+        /// <returns></returns>
+        int AddLicenseDetail(NewLicense newLicense);
+
+        object GetLicenseDetail(Guid licenseId);
     }
 }

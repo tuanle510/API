@@ -1,6 +1,6 @@
 ﻿namespace MISA.Core.Entities
 {
-    public class FixedAssetCategory
+    public class FixedAssetCategory: BaseEntity
     {
         /// <summary>
         /// Khóa chính

@@ -9,10 +9,6 @@ namespace MISA.Core.Interfaces.Respositories
 {
     public interface IFixedAssetRepository: IBaseRepository<FixedAsset>
     {
-        //FixedAsset GetById(Guid id);
-
-        //string GetNewFixedAssetCode();
-
         /// <summary>
         /// Xử lí xóa nhiều
         /// </summary>

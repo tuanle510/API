@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MISA.Core.Entities
 {
-    public class License
+    public class License : BaseEntity
     {
         /// <summary>
         /// Id chứng từ

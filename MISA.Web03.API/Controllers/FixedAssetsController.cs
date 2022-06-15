@@ -23,25 +23,6 @@ namespace MISA.Web03.API.Controllers
         }
 
         /// <summary>
-        /// Xử lí tạo mã tài sản mới
-        /// </summary>
-        /// <returns></returns>
-        //[HttpGet("NewFixedAssetCode")]
-        //public IActionResult GetNewAssetCode()
-        //{
-        //    try
-        //    {
-        //        var newFixedAssetCode = _fixedAssetRepository.GetNewFixedAssetCode();
-        //        return Ok(newFixedAssetCode);
-        //    }
-        //    catch (Exception ex)
-        //    {
-
-        //        return HandleException(ex);
-        //    }
-        //}
-
-        /// <summary>
         /// Xử lí xóa nhiều
         /// </summary>
         /// <param name="fixedAssetIdList"></param>
@@ -86,6 +67,13 @@ namespace MISA.Web03.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Xử lí Lấy danh sách còn lại (phía BE gửi lên 1 list, lấy danh sách mà không có list đấy)
+        /// </summary>
+        /// <param name="fixedAssetList"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
         [HttpGet("GetRestAsetList")]
         public IActionResult GetRestAsetList([FromQuery] Guid[] fixedAssetList, int pageIndex = 1, int pageSize = 20)
         {
