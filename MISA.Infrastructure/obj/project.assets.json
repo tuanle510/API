@@ -212,11 +212,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\MISA\\HCSN-project\\API\\MISA.Infrastructure\\MISA.Infrastructure.csproj",
+      "projectUniqueName": "E:\\MISA\\HCSN-Bài tập\\API\\MISA.Infrastructure\\MISA.Infrastructure.csproj",
       "projectName": "MISA.Infrastructure",
-      "projectPath": "D:\\MISA\\HCSN-project\\API\\MISA.Infrastructure\\MISA.Infrastructure.csproj",
+      "projectPath": "E:\\MISA\\HCSN-Bài tập\\API\\MISA.Infrastructure\\MISA.Infrastructure.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "D:\\MISA\\HCSN-project\\API\\MISA.Infrastructure\\obj\\",
+      "outputPath": "E:\\MISA\\HCSN-Bài tập\\API\\MISA.Infrastructure\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -233,8 +233,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "D:\\MISA\\HCSN-project\\API\\MISA.Core\\MISA.Core.csproj": {
-              "projectPath": "D:\\MISA\\HCSN-project\\API\\MISA.Core\\MISA.Core.csproj"
+            "E:\\MISA\\HCSN-Bài tập\\API\\MISA.Core\\MISA.Core.csproj": {
+              "projectPath": "E:\\MISA\\HCSN-Bài tập\\API\\MISA.Core\\MISA.Core.csproj"
             }
           }
         }

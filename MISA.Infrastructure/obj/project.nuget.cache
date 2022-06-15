@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ooe6Z5UxF3iwaxstqnOBkzwONeMt/Ndh6H+0yFWdA9Ivv4nSstNb1+YFELZWC6nRDDjwuPX/lf7WysResVI5Sg==",
+  "dgSpecHash": "R461jjgTkP9OiloJj2O11k2Z0TRK33CcprQGr88MiMHdz7eUWemT3Yx9ogiKftM9JX/oC6wJ3vfxT0AP0AnyfQ==",
   "success": true,
-  "projectFilePath": "D:\\MISA\\HCSN-project\\API\\MISA.Infrastructure\\MISA.Infrastructure.csproj",
+  "projectFilePath": "E:\\MISA\\HCSN-Bài tập\\API\\MISA.Infrastructure\\MISA.Infrastructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\dapper\\2.0.123\\dapper.2.0.123.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\6.0.0\\microsoft.extensions.configuration.abstractions.6.0.0.nupkg.sha512",
