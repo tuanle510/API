@@ -1,2 +1,11 @@
 
 *.dll
+*.json
+*.editorconfig
+MISA.Core/obj/Debug/net6.0/MISA.Core.GeneratedMSBuildEditorConfig.editorconfig
+*.json
+*.cache
+*.json
+*.json
+*.cache
+*.editorconfig
