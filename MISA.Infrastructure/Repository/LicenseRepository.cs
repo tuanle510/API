@@ -57,24 +57,18 @@ namespace MISA.Infrastructure.Repository
         /// </summary>
         /// <param name="licenseId"></param>
         /// <returns></returns>
-        public object GetLicenseDetail(Guid licenseId)
+        public List<FixedAsset> GetLicenseDetail(Guid licenseId)
         {
-            var sqlLicenseCommand = $"SELECT * FROM License WHERE LicenseId = @licenseId";
-            var parameters = new DynamicParameters();
-            parameters.Add("@LicenseId", licenseId);
 
-            var getLicense = _sqlConnection.QueryFirstOrDefault<License>(sqlLicenseCommand, param: parameters);
 
             //SELECT * FROM FixedAsset fa INNER JOIN LicenseDetail ld ON fa.FixedAssetId = ld.FixedAssetId WHERE ld.LicenseId ="bda9c7b0-b8c0-472c-a7fb-ffc85d203170"
             var sqlDetailCommand = $"SELECT * FROM FixedAsset INNER JOIN LicenseDetail ON FixedAsset.FixedAssetId = LicenseDetail.FixedAssetId WHERE LicenseDetail.LicenseId = @licenseId";
+            var parameters = new DynamicParameters();
+            parameters.Add("@LicenseId", licenseId);
             var getLicenseDetail = _sqlConnection.Query<FixedAsset>(sqlDetailCommand, param: parameters);
 
-            var licenseDetail = new
-            {
-                License = getLicense,
-                FixedAssetList = (List<FixedAsset>)getLicenseDetail.ToList()
-            };
-            return licenseDetail;
+
+            return getLicenseDetail.ToList();
         }
     }
 }

@@ -39,8 +39,15 @@ namespace MISA.Web03.API.Controllers
         {
             try
             {
-                var res = _licenseRepository.GetLicenseDetail(id);
-                return StatusCode(200, res);
+                var getLicense = _licenseRepository.GetById(id);
+                var getLicenseDetail = _licenseRepository.GetLicenseDetail(id);
+
+                var licenseDetail = new
+                {
+                    License = getLicense,
+                    FixedAssetList = getLicenseDetail
+                };
+                return StatusCode(200, licenseDetail);
             }
             catch (Exception ex)
             {

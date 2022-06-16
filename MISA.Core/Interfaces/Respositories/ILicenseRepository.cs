@@ -16,6 +16,6 @@ namespace MISA.Core.Interfaces.Respositories
         /// <returns></returns>
         int AddLicenseDetail(NewLicense newLicense);
 
-        object GetLicenseDetail(Guid licenseId);
+        List<FixedAsset> GetLicenseDetail(Guid licenseId);
     }
 }
