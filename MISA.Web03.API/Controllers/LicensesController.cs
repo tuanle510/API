@@ -19,6 +19,11 @@ namespace MISA.Web03.API.Controllers
             _licenseService = licenseService;
         }
 
+        /// <summary>
+        /// Xử lí tạo mới chứng từ (Thông tin chứng từ, Danh sách tài sản chứng từ)
+        /// </summary>
+        /// <param name="newLicense"></param>
+        /// <returns></returns>
         [HttpPost("InsertNewLicense")]
         public IActionResult InsertNewLicense(NewLicense newLicense)
 
@@ -34,6 +39,11 @@ namespace MISA.Web03.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Xử lí lấy chứng từ theo ID (Cả thông tin chứng từ và danh sách tài sản trong chứng từ)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("GetLicense/{id}")]
         public IActionResult GetLicense(Guid id)
         {
@@ -48,6 +58,20 @@ namespace MISA.Web03.API.Controllers
                     FixedAssetList = getLicenseDetail
                 };
                 return StatusCode(200, licenseDetail);
+            }
+            catch (Exception ex)
+            {
+                return HandleException(ex);
+            }
+        }
+
+        [HttpPut("UpdateLicense/{licenseId}")]
+        public IActionResult UpDateLicense(Guid licenseId, NewLicense newLicense)
+        {
+            try
+            {
+                var res = _licenseRepository.UpdatetLicense(licenseId, newLicense);
+                return StatusCode(200, res);
             }
             catch (Exception ex)
             {

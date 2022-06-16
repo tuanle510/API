@@ -92,6 +92,12 @@ namespace MISA.Infrastructure.Repository
                 {
                     prop.SetValue(entity, Guid.NewGuid());
                 }
+                // Kiểm tra prop hiện tại có phải là Ngày tạo hay không, nếu đúng thì gán lại giá trị mới cho prop:
+                var isCreateDate = prop.IsDefined(typeof(CreateDate), true);
+                if (isCreateDate == true)
+                {
+                    prop.SetValue(entity, DateTime.Now);
+                }
                 // Bồ sung cột hiện tại vào chuỗi câu truy vấn cột dữ liệu:
                 columnNames += $" {propName},";
                 columnParams += $"@{propName},";
@@ -143,10 +149,18 @@ namespace MISA.Infrastructure.Repository
                 // Kiểu dữ liệu của prop:
                 var propType = prop.PropertyType;
 
+                // Kiểm tra prop hiện tại có phải là khóa chính hay không, nếu đúng thì gán lại giá trị mới cho prop:
                 var isPrimarykey = prop.IsDefined(typeof(PrimaryKey), true);
                 if (isPrimarykey == true && propType == typeof(Guid))
                 {
                     prop.SetValue(entity, entityId);
+                }
+
+                // Kiểm tra prop hiện tại có phải là Ngày sửa hay không, nếu đúng thì gán lại giá trị mới cho prop:
+                var isModifiedDate = prop.IsDefined(typeof(ModifiedDate), true);
+                if (isModifiedDate == true)
+                {
+                    prop.SetValue(entity, DateTime.Now);
                 }
                 setParams += $"{propName} = @{propName},";
                 parameter.Add($"@{propName}", propValue);

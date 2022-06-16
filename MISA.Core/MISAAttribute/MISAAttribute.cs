@@ -12,7 +12,24 @@ namespace MISA.Core.MISAAttribute
     [AttributeUsage(AttributeTargets.Property|AttributeTargets.Field|AttributeTargets.Method)]
     public class PrimaryKey:Attribute
     {
-    } 
+    }
+
+    /// <summary>
+    /// Cờ ngày tạo
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Method)]
+    public class CreateDate:Attribute
+    {
+    }
+
+
+    /// <summary>
+    /// Cờ ngày sửa
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field | AttributeTargets.Method)]
+    public class ModifiedDate : Attribute
+    {
+    }
 
     /// <summary>
     /// Cờ check trốnh
