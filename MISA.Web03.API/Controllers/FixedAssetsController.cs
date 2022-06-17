@@ -57,7 +57,7 @@ namespace MISA.Web03.API.Controllers
             try
             {
                 // List data đã phân trang:
-                var FilterList = _fixedAssetRepository.Filter( FixedAssetCategoryName, DepartmentName, FixedAssetFilter, pageIndex, pageSize);
+                var FilterList = _fixedAssetRepository.FilterFixedAsset( FixedAssetCategoryName, DepartmentName, FixedAssetFilter, pageIndex, pageSize);
                
                 return StatusCode(200, FilterList);
             }
@@ -75,11 +75,11 @@ namespace MISA.Web03.API.Controllers
         /// <param name="pageSize"></param>
         /// <returns></returns>
         [HttpGet("GetRestAsetList")]
-        public IActionResult GetRestAsetList([FromQuery] Guid[] fixedAssetList, int pageIndex = 1, int pageSize = 20)
+        public IActionResult GetRestAsetList([FromQuery] Guid[] fixedAssetList, string? searchAsset, int pageIndex = 1, int pageSize = 20)
         {
             try
             {
-                var res = _fixedAssetRepository.GetRestFixedAssetList(fixedAssetList, pageIndex, pageSize);
+                var res = _fixedAssetRepository.GetRestFixedAssetList(fixedAssetList, searchAsset, pageIndex, pageSize);
                 return StatusCode(200, res);
             }
             catch (Exception)

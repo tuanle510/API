@@ -29,6 +29,9 @@ namespace MISA.Core.Interfaces.Respositories
         /// <param name="licenseId">Id chứng từ cần sửa</param>
         /// <param name="newLicense">Danh sách tài sản thuộc chứng từ</param>
         /// <returns>Số lượng bản ghi được sửa</returns>
-        int UpdatetLicense(Guid licenseId, NewLicense newLicense);
+        int UpdatetLicenseDetail(Guid licenseId, List<LicenseDetail>  licenseDetails);
+
+        object FilterLicenseDetail(string? searchLicense, int pageIndex, int pageSize);
+
     }
 }

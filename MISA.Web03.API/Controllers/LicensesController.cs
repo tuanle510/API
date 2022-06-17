@@ -19,17 +19,20 @@ namespace MISA.Web03.API.Controllers
             _licenseService = licenseService;
         }
 
+        //[HttpGet("Filter")]
+
         /// <summary>
         /// Xử lí tạo mới chứng từ (Thông tin chứng từ, Danh sách tài sản chứng từ)
         /// </summary>
         /// <param name="newLicense"></param>
         /// <returns></returns>
-        [HttpPost("InsertNewLicense")]
+        [HttpPost("InsertLicense")]
         public IActionResult InsertNewLicense(NewLicense newLicense)
 
         {
             try
             {
+                
                 var res = _licenseRepository.AddLicenseDetail(newLicense);
                 return StatusCode(200, res);
             }
@@ -44,13 +47,13 @@ namespace MISA.Web03.API.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("GetLicense/{id}")]
-        public IActionResult GetLicense(Guid id)
+        [HttpGet("GetLicense/{licenseId}")]
+        public IActionResult GetLicense(Guid licenseId)
         {
             try
             {
-                var getLicense = _licenseRepository.GetById(id);
-                var getLicenseDetail = _licenseRepository.GetLicenseDetail(id);
+                var getLicense = _licenseRepository.GetById(licenseId);
+                var getLicenseDetail = _licenseRepository.GetLicenseDetail(licenseId);
 
                 var licenseDetail = new
                 {
@@ -65,16 +68,39 @@ namespace MISA.Web03.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Xử lí sửa thông tin chứng từ và danh sách tài sản trong chứng từ
+        /// </summary>
+        /// <param name="licenseId">Id chứng từ cần sửa</param>
+        /// <param name="newLicense">Đối tượng đã sửa</param>
+        /// <returns>Số bản ghi đã được sửa</returns>
         [HttpPut("UpdateLicense/{licenseId}")]
         public IActionResult UpDateLicense(Guid licenseId, NewLicense newLicense)
         {
             try
             {
-                var res = _licenseRepository.UpdatetLicense(licenseId, newLicense);
-                return StatusCode(200, res);
+                var license = _licenseRepository.Update(licenseId, newLicense.License);
+                var licenseDetails = _licenseRepository.UpdatetLicenseDetail(licenseId, newLicense.licenseDetails);
+                return StatusCode(200, licenseDetails + license);
             }
             catch (Exception ex)
             {
+                return HandleException(ex);
+            }
+        }
+
+        [HttpGet("FilterLicense")]
+        public   IActionResult FilterLicense(string? searchLicense = "", int pageIndex = 1, int pageSize = 20)
+        {
+            try
+            {
+                var res = _licenseRepository.FilterLicenseDetail(searchLicense, pageIndex, pageSize);
+                return StatusCode(200, res);
+
+            }
+            catch (Exception ex)
+            {
+
                 return HandleException(ex);
             }
         }

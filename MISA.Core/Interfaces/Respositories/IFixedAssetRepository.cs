@@ -25,14 +25,17 @@ namespace MISA.Core.Interfaces.Respositories
         /// <param name="pageIndex"> Số trang </param>
         /// <param name="pageSize"> Sô bản ghi trong 1 trang </param>
         /// <returns> Trả về danh sách đã filter và phân trang </returns>
-        object Filter( string? FixedAssetCategoryName, string? DepartmentName,string FixedAssetFilter,  int pageIndex, int pageSize );
+        object FilterFixedAsset( string? FixedAssetCategoryName, string? DepartmentName,string FixedAssetFilter,  int pageIndex, int pageSize );
 
 
         /// <summary>
-        /// Lấy tất cả bản ghi còn lại (trừ những bản ghi được gửi lên)
+        /// Xử lí lấy về bản ghi đã được lọc
         /// </summary>
+        /// <param name="fixedAssetList"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
         /// <returns></returns>
-        object GetRestFixedAssetList(Guid[] fixedAssetList, int pageIndex, int pageSize);
+        object GetRestFixedAssetList(Guid[] fixedAssetList, string searchAsset, int pageIndex, int pageSize);
 
     }
 }

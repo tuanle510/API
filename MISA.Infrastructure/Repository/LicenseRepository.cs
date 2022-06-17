@@ -31,8 +31,8 @@ namespace MISA.Infrastructure.Repository
             newLicense.License.LicenseId = Guid.NewGuid();
 
             // Thêm license mới:
-            var sqlLicenseCommand = $"INSERT License (LicenseId, LicenseCode, UseDate, WriteUpDate, Description, Total) " +
-                $"VALUES(@LicenseId, @LicenseCode, @UseDate, @WriteUpDate, @Description, @Total)";
+            var sqlLicenseCommand = $"INSERT License (LicenseId, LicenseCode, UseDate, WriteUpDate, Description, Total, CreatedDate) " +
+                $"VALUES(@LicenseId, @LicenseCode, @UseDate, @WriteUpDate, @Description, @Total, @CreatedDate)";
             var parameters = new DynamicParameters();
             parameters.Add("@LicenseId", newLicense.License.LicenseId);
             parameters.Add("@LicenseCode", newLicense.License.LicenseCode);
@@ -40,6 +40,7 @@ namespace MISA.Infrastructure.Repository
             parameters.Add("@WriteUpDate", newLicense.License.WriteUpDate);
             parameters.Add("@Description", newLicense.License.Description);
             parameters.Add("@Total", newLicense.License.Total);
+            parameters.Add("@CreatedDate", DateTime.Now);   
             // Thưc hiện câu lệnh sql:
             var licenseAdd = _sqlConnection.Execute(sqlLicenseCommand, param: parameters);
 
@@ -47,12 +48,14 @@ namespace MISA.Infrastructure.Repository
             foreach (var detail in newLicense.licenseDetails)
             {
                 detail.LicenseDetailId = Guid.NewGuid();
-                var sqlDetailCommand = $"INSERT LicenseDetail (LicenseDetailId, LicenseId, FixedAssetId, DetailJson) " +
-                    $"VALUES(@LicenseDetailId, @LicenseId, @FixedAssetId, @DetailJson)";
+                var sqlDetailCommand = $"INSERT LicenseDetail (LicenseDetailId, LicenseId, FixedAssetId, DetailJson, CreatedDate) " +
+                    $"VALUES(@LicenseDetailId, @LicenseId, @FixedAssetId, @DetailJson, @CreatedDate)";
                 parameters.Add("@LicenseDetailId", detail.LicenseDetailId);
                 parameters.Add("@LicenseId", newLicense.License.LicenseId);
                 parameters.Add("@FixedAssetId", detail.FixedAssetId);
                 parameters.Add("@DetailJson", detail.DetailJson);
+                parameters.Add("@CreatedDate", DateTime.Now);
+
                 // Thưc hiện câu lệnh sql:
                 var detailDAdd = _sqlConnection.Execute(sqlDetailCommand, param: parameters);
             }
@@ -75,26 +78,25 @@ namespace MISA.Infrastructure.Repository
         }
 
         /// <summary>
-        /// 
+        /// Xử lí sửa danh sách tài sản chứng từ:
         /// </summary>
-        /// <param name="licenseId"> Id của chứng từ cần sửa </param>
-        /// <param name="newLicense"> Thông tin đối tượng cần sửa (gồm thông tin chứng từ, ) </param>
-        /// <returns></returns>
-        public int UpdatetLicense(Guid licenseId, NewLicense newLicense)
+        /// <param name="licenseId">Id của chứng từ cần sửa</param>
+        /// <param name="licenseDetails">Danh sách tài sản mới</param>
+        /// <returns>Số bản ghi đã sửa</returns>
+        public int UpdatetLicenseDetail(Guid licenseId, List<LicenseDetail> licenseDetails)
         {
-            //TODO: cập nhật thông tin chứng từ:
-            // Lấy thông tin chứng từ mới:
-            var license = newLicense.License;
-            // Lấy danh sách tài sản thuộc chứng từ mới:
-            var licenseDetails = newLicense.licenseDetails;
-            // Lấy ra danh sách Id:
+            //Tổng số bản ghi bị ảnh hưởng:
+            var count = 0;
+            // Lấy ra danh sách Id mới nhận:
             var newIdList = licenseDetails.Select(licenseDetail => licenseDetail.FixedAssetId).ToList();
 
             // Cập nhật thông tin chứng từ:
             // Cập nhật danh sách tài sản thuộc chứng từ:
             //1. Lấy danh sách bản ghi tài sản cũ:
-            var sqlCommand = $"SELECT * FROM LicenseDetail";
-            var currentAssetlist = _sqlConnection.Query<LicenseDetail>(sqlCommand);
+            var sqlCommand = $"SELECT * FROM LicenseDetail WHERE LicenseId = @LicenseId";
+            var parameters = new DynamicParameters();
+            parameters.Add("@LicenseId", licenseId);
+            var currentAssetlist = _sqlConnection.Query<LicenseDetail>(sqlCommand, param: parameters);
             // Lấy ra danh sách Id:
             var currentIdList = currentAssetlist.Select(licenseDetail => licenseDetail.FixedAssetId).ToList();
 
@@ -109,13 +111,11 @@ namespace MISA.Infrastructure.Repository
                 var newGuid = Guid.NewGuid();
                 var sqlInsert = $"INSERT LicenseDetail (LicenseDetailId, LicenseId, FixedAssetId) " +
                     $"VALUES(@LicenseDetailId, @LicenseId, @FixedAssetId)";
-                var parameters = new DynamicParameters();
-
                 parameters.Add("@LicenseDetailId", newGuid);
-                parameters.Add("@LicenseId", newLicense.License.LicenseId);
                 parameters.Add("@FixedAssetId", asset);
                 // Thưc hiện câu lệnh sql:
-                var detailDAdd = _sqlConnection.Execute(sqlInsert, param: parameters);
+                var detailAdd = _sqlConnection.Execute(sqlInsert, param: parameters);
+                count++;
             }
 
             //2.3 Nếu bản ghi không có trong list mới nhưng có trong list cũng => thì xóa đi:
@@ -123,16 +123,93 @@ namespace MISA.Infrastructure.Repository
             foreach (var asset in deleteList)
             {
                 var sqlDelete = $"DELETE FROM LicenseDetail WHERE FixedAssetId = @FixedAssetId AND LicenseId = @LicenseId";
-                var parameters = new DynamicParameters();
-
-                parameters.Add("@LicenseId", asset);
-                parameters.Add("@FixedAssetId", newLicense.License.LicenseId);
+                parameters.Add("@FixedAssetId", asset);
                 // Thưc hiện câu lệnh sql:
-                var detailDAdd = _sqlConnection.Execute(sqlDelete, param: parameters);
+                var detailDelete = _sqlConnection.Execute(sqlDelete, param: parameters);
+                count++;
+            }
+          
+
+            return count;
+        }
+
+        ///
+        public object Filter(string? FixedAssetCategoryName, string? DepartmentName, string FixedAssetFilter, int pageIndex, int pageSize)
+        {
+            // Nếu trả về null thì gắn vào giá trị "":
+            if (string.IsNullOrEmpty(FixedAssetFilter))
+            {
+                FixedAssetFilter = "";
+            }
+            // Tính giá trị tổng offset:
+            var totalOffset = (pageIndex - 1) * pageSize;
+            // Khởi tạo câu truy vấn: 
+            var sqlQuery = "SELECT * FROM FixedAsset WHERE (FixedAssetName LIKE CONCAT('%',@FixedAssetFilter,'%') OR FixedAssetCode LIKE CONCAT('%',@FixedAssetFilter,'%')) ";
+
+            if (!string.IsNullOrEmpty(FixedAssetCategoryName))
+            {
+                sqlQuery += "AND FixedAssetCategoryName = @FixedAssetCategoryName ";
             }
 
+            if (!string.IsNullOrEmpty(DepartmentName))
+            {
+                sqlQuery += "AND DepartmentName = @DepartmentName ";
+            }
 
-            return currentAssetlist.Count();
+            var parameters = new DynamicParameters();
+            parameters.Add("@FixedAssetFilter", FixedAssetFilter);
+            parameters.Add("@FixedAssetCategoryName", FixedAssetCategoryName);
+            parameters.Add("@DepartmentName", DepartmentName);
+            var count = _sqlConnection.Query<FixedAsset>(sqlQuery, param: parameters);
+
+
+            sqlQuery += "ORDER BY CreatedDate DESC LIMIT @pageSize OFFSET @totalOffset";
+            parameters.Add("@pageSize", pageSize);
+            parameters.Add("@totalOffset", totalOffset);
+
+            // Thực hiện truy vấn: 
+            var list = _sqlConnection.Query<FixedAsset>(sqlQuery, param: parameters);
+
+            var res = new
+            {
+                List = (List<FixedAsset>)list.ToList(),
+                Count = (int)count.Count()
+            };
+
+            // Trả về dữ liệu dạng List:
+            return res;
+        }
+
+        public object FilterLicenseDetail(string? searchLicense, int pageIndex, int pageSize)
+        {
+            // Nếu trả về null thì gắn vào giá trị "":
+            if (string.IsNullOrEmpty(searchLicense))
+            {
+                searchLicense = "";
+            }
+            // Tính giá trị tổng offset:
+            var totalOffset = (pageIndex - 1) * pageSize;
+            // Khởi tạo câu truy vấn: 
+            var sqlQuery = "SELECT * FROM License WHERE (LicenseCode LIKE CONCAT('%',@searchLicense,'%') OR Description LIKE CONCAT('%',@searchLicense,'%')) ";
+            var parameters = new DynamicParameters();
+            parameters.Add("@searchLicense", searchLicense);
+            var count = _sqlConnection.Query<License>(sqlQuery, param: parameters);
+
+            // Phân trang: 
+            sqlQuery += "ORDER BY CreatedDate DESC LIMIT @pageSize OFFSET @totalOffset";
+            parameters.Add("@pageSize", pageSize);
+            parameters.Add("@totalOffset", totalOffset);
+            var list = _sqlConnection.Query<License>(sqlQuery, param: parameters);
+
+            // Trả về đối tượng:
+            var res = new
+            {
+                List = (List<License>)list.ToList(),
+                Count = (int)count.Count()
+            };
+
+            // Trả về dữ liệu dạng List:
+            return res;
         }
     }
 }
