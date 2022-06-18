@@ -13,10 +13,15 @@ namespace MISA.Web03.API.Controllers
     {
         ILicenseRepository _licenseRepository;
         ILicenseService _licenseService;
-        public LicensesController(ILicenseService licenseService, ILicenseRepository licenseRepository) : base(licenseService, licenseRepository)
+
+        ILicenseDetailRepository _licensedetailRepository;
+
+        public LicensesController(ILicenseService licenseService, ILicenseRepository licenseRepository, ILicenseDetailRepository licenseDetailRepository) : base(licenseService, licenseRepository)
         {
             _licenseRepository = licenseRepository;
             _licenseService = licenseService;
+
+            _licensedetailRepository = licenseDetailRepository;
         }
 
         //[HttpGet("Filter")]
@@ -27,13 +32,12 @@ namespace MISA.Web03.API.Controllers
         /// <param name="newLicense"></param>
         /// <returns></returns>
         [HttpPost("InsertLicense")]
-        public IActionResult InsertNewLicense(NewLicense newLicense)
+        public IActionResult InsertLicenseDetail(NewLicense newLicense)
 
         {
             try
             {
-                
-                var res = _licenseRepository.AddLicenseDetail(newLicense);
+                var res = _licenseService.InsertLicenseDetail(newLicense);
                 return StatusCode(200, res);
             }
             catch (Exception ex)
@@ -53,7 +57,7 @@ namespace MISA.Web03.API.Controllers
             try
             {
                 var getLicense = _licenseRepository.GetById(licenseId);
-                var getLicenseDetail = _licenseRepository.GetLicenseDetail(licenseId);
+                var getLicenseDetail = _licensedetailRepository.GetByLicenseId(licenseId);
 
                 var licenseDetail = new
                 {
@@ -75,13 +79,13 @@ namespace MISA.Web03.API.Controllers
         /// <param name="newLicense">Đối tượng đã sửa</param>
         /// <returns>Số bản ghi đã được sửa</returns>
         [HttpPut("UpdateLicense/{licenseId}")]
-        public IActionResult UpDateLicense(Guid licenseId, NewLicense newLicense)
+        public IActionResult UpDateLicenseDetail(Guid licenseId, NewLicense newLicense)
         {
             try
             {
-                var license = _licenseRepository.Update(licenseId, newLicense.License);
-                var licenseDetails = _licenseRepository.UpdatetLicenseDetail(licenseId, newLicense.licenseDetails);
-                return StatusCode(200, licenseDetails + license);
+                var res = _licenseService.UpdateLicenseDetail(licenseId, newLicense);
+                
+                return StatusCode(200, res);
             }
             catch (Exception ex)
             {

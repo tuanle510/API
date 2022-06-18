@@ -9,6 +9,6 @@ namespace MISA.Core.Entities
     public class NewLicense
     {
         public License License { get; set; }
-        public List<LicenseDetail> licenseDetails { get; set; }
+        public List<LicenseDetail> LicenseDetails { get; set; }
     }
 }

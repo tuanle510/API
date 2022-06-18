@@ -88,7 +88,7 @@ namespace MISA.Infrastructure.Repository
                 var propType = prop.PropertyType;
                 // Kiểm tra prop hiện tại có phải là khóa chính hay không, nếu đúng thì gán lại giá trị mới cho prop:
                 var isPrimarykey = prop.IsDefined(typeof(PrimaryKey), true);
-                if (isPrimarykey == true && propType == typeof(Guid))
+                if (isPrimarykey == true && propType == typeof(Guid) && (Guid)propValue == Guid.Empty)
                 {
                     prop.SetValue(entity, Guid.NewGuid());
                 }
@@ -149,7 +149,7 @@ namespace MISA.Infrastructure.Repository
                 // Kiểu dữ liệu của prop:
                 var propType = prop.PropertyType;
 
-                // Kiểm tra prop hiện tại có phải là khóa chính hay không, nếu đúng thì gán lại giá trị mới cho prop:
+                // Kiểm tra prop hiện tại có phải là khóa chính hay không, nếu đúng thì gán lại giá trị cho prop:
                 var isPrimarykey = prop.IsDefined(typeof(PrimaryKey), true);
                 if (isPrimarykey == true && propType == typeof(Guid))
                 {

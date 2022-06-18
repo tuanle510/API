@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MISA.Core.MISAAttribute;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,16 +13,22 @@ namespace MISA.Core.Entities
         /// Id chứng từ
         /// Khóa chính
         /// </summary>
+        [PrimaryKey]
+        [IsNotNullOrEmpty]
         public Guid LicenseDetailId { get; set; }
 
         /// <summary>
         /// Id chứng từ
         /// </summary>
+        [IsNotNullOrEmpty]
+        [FriendlyName("Mã chứng từ")]
         public Guid LicenseId { get; set; }
 
         /// <summary>
         /// Mã tài sản
         /// </summary>
+        [IsNotNullOrEmpty]
+        [FriendlyName("Mã tài sản")]
         public Guid FixedAssetId { get; set; }
 
         /// <summary>

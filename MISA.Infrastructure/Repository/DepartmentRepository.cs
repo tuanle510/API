@@ -15,20 +15,5 @@ namespace MISA.Infrastructure.Repository
         public DepartmentRepository(IConfiguration configuration) : base(configuration)
         {
         }
-
-        public int Delete(Guid entityId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int Insert(Department entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int Update(Guid id ,Department entity)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

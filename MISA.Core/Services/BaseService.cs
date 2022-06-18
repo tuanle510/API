@@ -15,7 +15,7 @@ namespace MISA.Core.Services
     {
         IBaseRepository<T> _baseRepository;
         protected List<String> ValidateErrorsMsg;
-            string _tableName;
+        string _tableName;
         public BaseService(IBaseRepository<T> baseRepository)
         {
             _baseRepository = baseRepository;
@@ -43,7 +43,7 @@ namespace MISA.Core.Services
             // Nếu có thì lấy ra:
             if (isFriendlyName)
             {
-                 entityFriendlyName = (typeof(T).GetProperty($"{ _tableName}Code").GetCustomAttributes(typeof(FriendlyName), true)[0] as FriendlyName).Name;
+                entityFriendlyName = (typeof(T).GetProperty($"{ _tableName}Code").GetCustomAttributes(typeof(FriendlyName), true)[0] as FriendlyName).Name;
             }
             // Kiểm tra code có bị trùng không:
             if (_baseRepository.CheckCodeExist(entityCodeToCheck, Guid.Empty) == true)
@@ -79,7 +79,7 @@ namespace MISA.Core.Services
             // Check mã trùng
             // Lấy giá trị code của entity:
             var entityCodeToCheck = typeof(T).GetProperty($"{ _tableName}Code").GetValue(entity, null).ToString();
-            
+
             // lấy FiendLy Name của entity:
             var entityFriendlyName = "";
             // Kiểm tra xem có friendlyName không:

@@ -16,21 +16,5 @@ namespace MISA.Infrastructure.Repository
         {
 
         }
-
-        public int Delete(Guid entityId)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public int Insert(FixedAssetCategory entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int Update(Guid id,FixedAssetCategory entity)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

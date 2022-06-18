@@ -51,6 +51,9 @@ builder.Services.AddScoped<IFixedAssetService, FixedAssetService>();
 builder.Services.AddScoped<ILicenseRepository, LicenseRepository>();
 builder.Services.AddScoped<ILicenseService, LicenseService>();
 
+builder.Services.AddScoped<ILicenseDetailRepository, LicenseDetailRepository>();
+builder.Services.AddScoped<ILicenseDetailService, LicenseDetailService>();
+
 builder.Services.AddScoped<IFixedAssetCategoryRepository, FixedAssetCategoryRepository>();
 builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 
