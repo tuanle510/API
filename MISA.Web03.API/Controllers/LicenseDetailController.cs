@@ -30,19 +30,5 @@ namespace MISA.Web03.API.Controllers
                 return HandleException(ex);
             }
         }
-
-        [HttpPut("UpdateJsonDetail/{id}")]
-        public IActionResult UpdateJsonDetail(Guid id, LicenseDetail licenseDetail)
-        {
-            try
-            {
-                var res = _licensedetailRepository.UpdateJsonDetail(id, licenseDetail);
-                return StatusCode(200, res);
-            }
-            catch (Exception ex)
-            {
-                return HandleException(ex);
-            }
-        }
     }
 }

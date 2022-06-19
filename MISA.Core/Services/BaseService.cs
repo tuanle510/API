@@ -35,18 +35,12 @@ namespace MISA.Core.Services
 
             // Check mã trùng
             // Lấy giá trị code của entity:
-            var entityCodeToCheck = typeof(T).GetProperty($"{ _tableName}Code").GetValue(entity, null).ToString();
+            var entityCodeToCheck = typeof(T)?.GetProperty($"{ _tableName}Code")?.GetValue(entity, null)?.ToString();
             // Lấy giá trị friendlyName:
-            var entityFriendlyName = "";
-            // Kiểm tra xem có friendlyName không:
-            var isFriendlyName = typeof(T).GetProperty($"{ _tableName}Code").IsDefined(typeof(FriendlyName), true);
-            // Nếu có thì lấy ra:
-            if (isFriendlyName)
-            {
-                entityFriendlyName = (typeof(T).GetProperty($"{ _tableName}Code").GetCustomAttributes(typeof(FriendlyName), true)[0] as FriendlyName).Name;
-            }
+            var entityFriendlyName = (typeof(T).GetProperty($"{ _tableName}Code")?.GetCustomAttributes(typeof(FriendlyName), true)[0] as FriendlyName)?.Name;
+
             // Kiểm tra code có bị trùng không:
-            if (_baseRepository.CheckCodeExist(entityCodeToCheck, Guid.Empty) == true)
+            if (!string.IsNullOrEmpty(entityCodeToCheck) && _baseRepository.CheckCodeExist(entityCodeToCheck, Guid.Empty) == true)
             {
                 ValidateErrorsMsg.Add(string.Format(Resources.ResourceVN.ErrorValidate_PropertyDuplicate, entityFriendlyName));
             }
@@ -78,19 +72,12 @@ namespace MISA.Core.Services
 
             // Check mã trùng
             // Lấy giá trị code của entity:
-            var entityCodeToCheck = typeof(T).GetProperty($"{ _tableName}Code").GetValue(entity, null).ToString();
+            var entityCodeToCheck = typeof(T).GetProperty($"{ _tableName}Code")?.GetValue(entity, null)?.ToString();
 
-            // lấy FiendLy Name của entity:
-            var entityFriendlyName = "";
-            // Kiểm tra xem có friendlyName không:
-            var isFriendlyName = typeof(T).GetProperty($"{ _tableName}Code").IsDefined(typeof(FriendlyName), true);
-            // Nếu có thì lấy ra:
-            if (isFriendlyName)
-            {
-                entityFriendlyName = (typeof(T).GetProperty($"{ _tableName}Code").GetCustomAttributes(typeof(FriendlyName), true)[0] as FriendlyName).Name;
-            }
+            var entityFriendlyName = (typeof(T).GetProperty($"{ _tableName}Code")?.GetCustomAttributes(typeof(FriendlyName), true)[0] as FriendlyName)?.Name;
+
             // Kiểm tra xem code có trùng không
-            if (_baseRepository.CheckCodeExist(entityCodeToCheck, entityId) == true)
+            if (!string.IsNullOrEmpty(entityCodeToCheck) && _baseRepository.CheckCodeExist(entityCodeToCheck, entityId) == true)
             {
                 ValidateErrorsMsg.Add(string.Format(Resources.ResourceVN.ErrorValidate_PropertyDuplicate, entityFriendlyName));
             }

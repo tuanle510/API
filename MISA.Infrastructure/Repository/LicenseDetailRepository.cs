@@ -29,7 +29,7 @@ namespace MISA.Infrastructure.Repository
         public object GetLicenseDetai(Guid licenseDetailId)
         {
             var sqlCommand = "SELECT ld.LicenseDetailId, ld.LicenseId, ld.FixedAssetId, ld.DetailJson, fa.DepartmentName, fa.FixedAssetName FROM LicenseDetail ld JOIN FixedAsset fa ON ld.FixedAssetId = fa.FixedAssetId AND ld.LicenseDetailId = @licenseDetailId";
-                var parameters = new DynamicParameters();
+            var parameters = new DynamicParameters();
             parameters.Add("@licenseDetailId", licenseDetailId);
             var res = _sqlConnection.QueryFirstOrDefault<object>(sqlCommand, param: parameters);
             return res;
@@ -41,7 +41,7 @@ namespace MISA.Infrastructure.Repository
             foreach (var detail in licenseDetails)
             {
                 detail.LicenseId = licenseId;
-               var addDetail = Insert(detail);
+                var addDetail = Insert(detail);
                 count += addDetail;
             }
             return count; // trả về số bản ghi bị ảnh hưởng
@@ -70,13 +70,17 @@ namespace MISA.Infrastructure.Repository
 
             //2.2 Nếu bản ghi chưa có => tạo bản ghi mới:
             var insertList = newIdList.Except(currentIdList).ToList();
+
             foreach (var asset in insertList)
             {
+                // gán lại detailJon từ mảng mới nhận về: 
+                var detailJson = licenseDetails?.Find(item => item.FixedAssetId == asset)?.DetailJson;
                 var newGuid = Guid.NewGuid();
-                var sqlInsert = $"INSERT LicenseDetail (LicenseDetailId, LicenseId, FixedAssetId) " +
-                    $"VALUES(@LicenseDetailId, @LicenseId, @FixedAssetId)";
+                var sqlInsert = $"INSERT LicenseDetail (LicenseDetailId, LicenseId, FixedAssetId, DetailJson) " +
+                    $"VALUES(@LicenseDetailId, @LicenseId, @FixedAssetId, @DetailJson)";
                 parameters.Add("@LicenseDetailId", newGuid);
                 parameters.Add("@FixedAssetId", asset);
+                parameters.Add("@DetailJson", detailJson);
                 // Thưc hiện câu lệnh sql:
                 var detailAdd = _sqlConnection.Execute(sqlInsert, param: parameters);
                 count++;
@@ -97,14 +101,6 @@ namespace MISA.Infrastructure.Repository
             return count;
         }
 
-        public int UpdateJsonDetail(Guid id, LicenseDetail licenseDetail)
-        {
-            var sqlCommant = "UPDATE LicenseDetail ld SET  ld.DetailJson = @DetailJson WHERE ld.LicenseDetailId = @LicenseDetailId";
-            var parameters = new DynamicParameters();
-            parameters.Add("@DetailJson", licenseDetail.DetailJson);
-            parameters.Add("@LicenseDetailId", id);
-            var res = _sqlConnection.Execute(sqlCommant, param: parameters);
-            return res;
-        }
+       
     }
 }

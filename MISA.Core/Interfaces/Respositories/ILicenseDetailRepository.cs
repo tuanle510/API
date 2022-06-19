@@ -24,8 +24,6 @@ namespace MISA.Core.Interfaces.Respositories
         /// <returns></returns>
         object GetLicenseDetai(Guid licenseId);
 
-        int UpdateJsonDetail(Guid id, LicenseDetail licenseDetail);
-
         /// <summary>
         /// Thêm nhiều bản ghi:
         /// </summary>

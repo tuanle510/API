@@ -32,6 +32,10 @@ namespace MISA.Core.Services
             var license = newLicense.License;
             var licenseDetails = newLicense.LicenseDetails;
 
+            // So sánh ngày bắt đầu sử dụng và ngày ghi tăng:
+            var writeUp = license.WriteUpDate;
+            var useDate = license.UseDate;
+
             // Kiểm tra nếu danh sách tài sản trống: => trả về cảnh báo
             if (licenseDetails.Count == 0)
             {

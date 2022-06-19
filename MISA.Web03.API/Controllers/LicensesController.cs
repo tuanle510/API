@@ -38,7 +38,7 @@ namespace MISA.Web03.API.Controllers
             try
             {
                 var res = _licenseService.InsertLicenseDetail(newLicense);
-                return StatusCode(200, res);
+                return StatusCode(201, res);
             }
             catch (Exception ex)
             {
