@@ -21,6 +21,24 @@ namespace MISA.Core.Services
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="license"></param>
+        /// <returns></returns>
+        protected override bool ValidateObjectCustom(License license)
+        {
+            var writeUp = license.WriteUpDate;
+            var useDate = license.UseDate;
+            var compareDate = DateTime.Compare(useDate, writeUp);
+            if (compareDate > 0)
+            {
+                ValidateErrorsMsg.Add("Ngày ghi tăng không được sớm hơn ngày sử dụng.");
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
         /// Xử lí sự kiện thêm mới chứng từ và danh sách tài sản có chứng từ:
         /// </summary>
         /// <param name="newLicense"></param>
@@ -32,31 +50,13 @@ namespace MISA.Core.Services
             var license = newLicense.License;
             var licenseDetails = newLicense.LicenseDetails;
 
-            // So sánh ngày bắt đầu sử dụng và ngày ghi tăng:
-            var writeUp = license.WriteUpDate;
-            var useDate = license.UseDate;
-
-            // Kiểm tra nếu danh sách tài sản trống: => trả về cảnh báo
-            if (licenseDetails.Count == 0)
-            {
-                ValidateErrorsMsg.Add("Chọn ít nhất 1 tài sản.");
-                // Nếu có lỗi khởi tạo đối tượng (Khi có lỗi mới khỏi tạo đối tượng)
-                var validateError = new ValidateError();
-                validateError.UserMsg = "Đã có lỗi";
-                validateError.Data = ValidateErrorsMsg;
-                throw new MISAValidateException("Dữ liệu đầu vào không hợp lệ", ValidateErrorsMsg);
-            }
-            // Nếu danh sách tài sản đã có dữ liệu: => thực hiện thêm
-            else
-            {
-                // Tạo Id mới
-                license.LicenseId = Guid.NewGuid();
-                // Thêm mới bảng License:
-                var insertLicense = InsertService(license);
-                // Thêm mới bảng LicenseDetail:
-                var insertLicenseDetail = _licenseDetailRepository.MultiInsert(license.LicenseId, licenseDetails);
-                return insertLicense + insertLicenseDetail;
-            }
+            // Tạo Id mới
+            license.LicenseId = Guid.NewGuid();
+            // Thêm mới bảng License:
+            var insertLicense = InsertService(license);
+            // Thêm mới bảng LicenseDetail:
+            var insertLicenseDetail = _licenseDetailRepository.MultiInsert(license.LicenseId, licenseDetails);
+            return insertLicense + insertLicenseDetail;
         }
 
         public int UpdateLicenseDetail(Guid licenseId, NewLicense newLicense)

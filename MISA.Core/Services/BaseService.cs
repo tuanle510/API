@@ -144,8 +144,9 @@ namespace MISA.Core.Services
                     }
                 }
             }
-            return isValidate;
-            ValidateObjectCustom(entity);
+            return isValidate && ValidateObjectCustom(entity);
+
+
         }
 
         /// <summary>
@@ -153,9 +154,9 @@ namespace MISA.Core.Services
         /// </summary>
         /// <param name="entity"></param>
         /// <returns>List string các lỗi validate</returns>
-        protected virtual List<String> ValidateObjectCustom(T entity)
+        protected virtual bool ValidateObjectCustom(T entity)
         {
-            return null;
+            return true;
         }
     }
 }

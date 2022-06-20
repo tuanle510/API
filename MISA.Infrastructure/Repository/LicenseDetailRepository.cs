@@ -17,7 +17,7 @@ namespace MISA.Infrastructure.Repository
 
         }
 
-        public List<object> GetByLicenseId(Guid licenseId)
+        public List<object> GetAssetByLicenseId(Guid licenseId)
         {
             var sqlCommand = $"SELECT * FROM FixedAsset JOIN LicenseDetail ON FixedAsset.FixedAssetId = LicenseDetail.FixedAssetId WHERE LicenseDetail.LicenseId = @licenseId";
             var parameters = new DynamicParameters();

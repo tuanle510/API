@@ -238,5 +238,14 @@ namespace MISA.Infrastructure.Repository
             }
             return newCode;
         }
+
+        public int DeleteMulti(Guid[] idList)
+        {
+            var sqlQuerry = $"DELETE FROM {_tableName} WHERE {_tableName}Id IN @idList";
+            var parameters = new DynamicParameters();
+            parameters.Add("idList", idList);
+            var res = _sqlConnection.Execute(sqlQuerry, param: parameters);
+            return res;
+        }
     }
 }

@@ -57,7 +57,7 @@ namespace MISA.Web03.API.Controllers
             try
             {
                 var getLicense = _licenseRepository.GetById(licenseId);
-                var getLicenseDetail = _licensedetailRepository.GetByLicenseId(licenseId);
+                var getLicenseDetail = _licensedetailRepository.GetAssetByLicenseId(licenseId);
 
                 var licenseDetail = new
                 {

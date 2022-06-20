@@ -16,27 +16,7 @@ namespace MISA.Infrastructure.Repository
         }
 
         /// <summary>
-        /// Xóa nhiều bản ghi
-        /// </summary>
-        /// <param name="fixedAssetId"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public int DeleteMulti(Guid[] fixedAssetIdList)
-        {
-            // Tạo dạy danh dách id cần xóa để truyền vào câu lệnh sql
-            var idList = "";
-            foreach (var item in fixedAssetIdList)
-            {
-                idList += $"'{item}',";
-            }
-            idList = idList.Remove(idList.Length - 1, 1);
-            var sqlQuerry = $"DELETE FROM FixedAsset WHERE FixedAssetId IN ({idList})";
-            var res = _sqlConnection.Execute(sqlQuerry);
-            return res;
-        }
-
-        /// <summary>
-        /// 
+        /// Phân trang tài sản
         /// </summary>
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>

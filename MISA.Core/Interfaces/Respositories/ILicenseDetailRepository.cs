@@ -14,7 +14,7 @@ namespace MISA.Core.Interfaces.Respositories
         /// </summary>
         /// <param name="licenseId"></param>
         /// <returns></returns>
-        List<object> GetByLicenseId(Guid licenseDetailId);
+        List<object> GetAssetByLicenseId(Guid licenseDetailId);
 
 
         /// <summary>

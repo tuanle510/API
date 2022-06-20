@@ -23,26 +23,6 @@ namespace MISA.Web03.API.Controllers
         }
 
         /// <summary>
-        /// Xử lí xóa nhiều
-        /// </summary>
-        /// <param name="fixedAssetIdList"></param>
-        /// <returns></returns>
-        [HttpDelete("DeleteMulti")]
-        public IActionResult DeleteMulti([FromBody] Guid[] fixedAssetIdList)
-
-        {
-            try
-            {
-                var res = _fixedAssetRepository.DeleteMulti(fixedAssetIdList);
-                return StatusCode(200, res);
-            }
-            catch (Exception ex)
-            {
-                return HandleException(ex);
-            }
-        }
-
-        /// <summary>
         /// Xử lí phân trang và filter
         /// </summary>
         /// <param name="FixedAssetCategoryName"></param>

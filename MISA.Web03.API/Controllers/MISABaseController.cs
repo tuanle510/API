@@ -143,6 +143,26 @@ namespace MISA.Web03.API.Controllers
             }
         }
 
+        /// <summary> 
+        /// Xử lí xóa nhiều đối tượng
+        /// </summary>
+        /// <param name="idList"></param>
+        /// <returns></returns>
+        [HttpDelete("DeleteMulti")]
+        public IActionResult DeleteMulti([FromBody] Guid[] idList)
+
+        {
+            try
+            {
+                var res = _baseRepository.DeleteMulti(idList);
+                return StatusCode(200, res);
+            }
+            catch (Exception ex)
+            {
+                return HandleException(ex);
+            }
+        }
+
         #endregion 
         /// <summary>
         /// Xử lí lỗi Exception

@@ -44,6 +44,12 @@ namespace MISA.Core.Interfaces.Respositories
         /// <returns> số lượng bản ghi đã được xóa </returns>
         int Delete(Guid entityId);
 
+        /// <summary>
+        /// Xử lí xóa nhiều đối tượng theo id
+        /// </summary>
+        /// <param name="idList"></param>
+        /// <returns>Số lượng bản ghi đã xóa</returns>
+        int DeleteMulti(Guid[] idList);
 
         /// <summary>
         /// Kiểm tra code của đối tượng có bị trùng không
