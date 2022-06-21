@@ -15,7 +15,7 @@ namespace MISA.Core.Entities
         [CreateDate]
         public DateTime? CreatedDate { get; set; }
 
-        public string? CreatedBy { get; set; }
+        //public string? CreatedBy { get; set; }
 
         /// <summary>
         /// Ngày sửa dữ liệu
@@ -23,6 +23,6 @@ namespace MISA.Core.Entities
         [ModifiedDate]
         public DateTime? ModifiedDate { get; set; }
 
-        public string? ModifiedBy { get; set; }
+        //public string? ModifiedBy { get; set; }
     }
 }

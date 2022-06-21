@@ -19,7 +19,7 @@ namespace MISA.Infrastructure.Repository
 
         public List<object> GetAssetByLicenseId(Guid licenseId)
         {
-            var sqlCommand = $"SELECT * FROM FixedAsset JOIN LicenseDetail ON FixedAsset.FixedAssetId = LicenseDetail.FixedAssetId WHERE LicenseDetail.LicenseId = @licenseId";
+            var sqlCommand = $"SELECT * FROM FixedAsset JOIN LicenseDetail ON FixedAsset.FixedAssetId = LicenseDetail.FixedAssetId WHERE LicenseDetail.LicenseId = @licenseId ORDER BY LicenseDetail.CreatedDate DESC";
             var parameters = new DynamicParameters();
             parameters.Add("@LicenseId", licenseId);
             var res = _sqlConnection.Query<object>(sqlCommand, param: parameters);
@@ -54,7 +54,6 @@ namespace MISA.Infrastructure.Repository
             // Lấy ra danh sách Id mới nhận:
             var newIdList = licenseDetails.Select(licenseDetail => licenseDetail.FixedAssetId).ToList();
 
-            // Cập nhật thông tin chứng từ:
             // Cập nhật danh sách tài sản thuộc chứng từ:
             //1. Lấy danh sách bản ghi tài sản cũ:
             var sqlCommand = $"SELECT * FROM LicenseDetail WHERE LicenseId = @LicenseId";
@@ -66,7 +65,6 @@ namespace MISA.Infrastructure.Repository
 
             //2. So sánh:
             //2.1 Nếu bản ghi đã tồn tại rồi => bỏ qua:
-            //var notChangeList = Enumerable.SequenceEqual(newIdList, currentIdList);
 
             //2.2 Nếu bản ghi chưa có => tạo bản ghi mới:
             var insertList = newIdList.Except(currentIdList).ToList();

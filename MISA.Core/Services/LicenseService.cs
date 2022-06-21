@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace MISA.Core.Services
 {
@@ -59,17 +60,36 @@ namespace MISA.Core.Services
             return insertLicense + insertLicenseDetail;
         }
 
+        /// <summary>
+        /// Xử lí 
+        /// </summary>
+        /// <param name="licenseId"></param>
+        /// <param name="newLicense"></param>
+        /// <returns></returns>
         public int UpdateLicenseDetail(Guid licenseId, NewLicense newLicense)
         {
             // Tách đối tượng: 
             var license = newLicense.License;
             var licenseDetails = newLicense.LicenseDetails;
+            using (TransactionScope scope = new TransactionScope())
+            {
+                try
+                {
+                    // Sửa thông tin chứng từ:
+                    var updateLicense = UpdateService(licenseId, license);
+                    // Sửa danh sách tài sản có chứng từ:
+                    var updateLicenseDetail = _licenseDetailRepository.MultiUpdate(licenseId, licenseDetails);
 
-            // Sửa thông tin chứng từ:
-            var updateLicense = UpdateService(licenseId, license);
-            // Sửa danh sách tài sản có chứng từ:
-            var updateLicenseDetail = _licenseDetailRepository.MultiUpdate(licenseId, licenseDetails);
-            return updateLicense + updateLicenseDetail;
+                    var result = updateLicense + updateLicenseDetail;
+                    scope.Complete();
+
+                    return result;
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
 
         }
     }
