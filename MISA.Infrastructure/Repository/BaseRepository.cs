@@ -239,6 +239,11 @@ namespace MISA.Infrastructure.Repository
             return newCode;
         }
 
+        /// <summary>
+        /// Xử lí xóa nhiều bản ghi
+        /// </summary>
+        /// <param name="idList">Danh sách id cần xóa</param>
+        /// <returns></returns>
         public int DeleteMulti(Guid[] idList)
         {
             var sqlQuerry = $"DELETE FROM {_tableName} WHERE {_tableName}Id IN @idList";

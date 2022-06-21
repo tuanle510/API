@@ -149,7 +149,7 @@ namespace MISA.Web03.API.Controllers
         /// <param name="idList"></param>
         /// <returns></returns>
         [HttpDelete("DeleteMulti")]
-        public IActionResult DeleteMulti([FromBody] Guid[] idList)
+        public virtual IActionResult DeleteMulti([FromBody] Guid[] idList)
 
         {
             try
@@ -180,9 +180,9 @@ namespace MISA.Web03.API.Controllers
                 data = ex.Data
             };
             if (ex is MISAValidateException)
-                return StatusCode(400, res); //Lỗi từ server trả về 500
+                return StatusCode(200, res); 
             else
-                return StatusCode(500, res);
+                return StatusCode(500, res); //Lỗi từ server trả về 500
         }
     }
 }

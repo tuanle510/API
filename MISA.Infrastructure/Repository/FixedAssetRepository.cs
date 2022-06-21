@@ -16,6 +16,30 @@ namespace MISA.Infrastructure.Repository
         }
 
         /// <summary>
+        /// Xử lí kiểm tra tài sản đã có mã chứng từ chưa
+        /// </summary>
+        /// <param name="fixedAssetId"></param>
+        /// <returns></returns>
+        public object CheckAssetHasLicense(Guid[] fixedAssetIdList)
+        {
+            var parameters = new DynamicParameters();
+            foreach (var fixedAssetId in fixedAssetIdList)
+            {
+                var sqlCommand = "SELECT fa.FixedAssetCode, l.LicenseCode FROM LicenseDetail " +
+                    "JOIN FixedAsset fa ON LicenseDetail.FixedAssetId = fa.FixedAssetId " +
+                    "JOIN License l ON LicenseDetail.LicenseId = l.LicenseId " +
+                    "WHERE fa.FixedAssetId = @FixedAssetId";
+                parameters.Add("@FixedAssetId", fixedAssetId);
+                var hasLicense = _sqlConnection.QueryFirstOrDefault(sqlCommand, param: parameters);
+                if (hasLicense != null)
+                {
+                    return hasLicense;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Phân trang tài sản
         /// </summary>
         /// <param name="pageIndex"></param>
@@ -109,7 +133,7 @@ namespace MISA.Infrastructure.Repository
             parameters.Add("@pageSize", pageSize);
             parameters.Add("@totalOffset", totalOffset);
             sqlCommand += $"ORDER BY CreatedDate DESC LIMIT @pageSize OFFSET @totalOffset";
-            
+
             var list = _sqlConnection.Query<FixedAsset>(sqlCommand, parameters);
             var res = new
             {

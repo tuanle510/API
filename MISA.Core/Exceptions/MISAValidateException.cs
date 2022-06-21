@@ -16,6 +16,7 @@ namespace MISA.Core.Exceptions
             ErrorMsg = errorMsg;
             ErrorData = new Dictionary<string, List<string>>();
             ErrorData.Add("data", validateErrorMsg);
+
         }
 
         public override string Message => this.ErrorMsg;

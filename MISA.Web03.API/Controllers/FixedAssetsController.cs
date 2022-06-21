@@ -68,5 +68,24 @@ namespace MISA.Web03.API.Controllers
                 throw;
             }
         }
+
+        /// <summary>
+        /// Xử lí xóa đối tượng theo Id
+        /// </summary>
+        /// <param name="entityId"> Id của đối tượng </param>
+        /// <returns></returns>
+        [HttpDelete("DeleteMulti")]
+        public override IActionResult DeleteMulti([FromBody] Guid[] idList)
+        {
+            try
+            {
+                var res = _fixedAssetService.DeleteService(idList);
+                return StatusCode(200, res);
+            }
+            catch (Exception ex)
+            {
+                return HandleException(ex);
+            }
+        }
     }
 }

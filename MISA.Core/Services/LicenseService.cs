@@ -32,7 +32,7 @@ namespace MISA.Core.Services
             var compareDate = DateTime.Compare(useDate, writeUp);
             if (compareDate > 0)
             {
-                ValidateErrorsMsg.Add("Ngày ghi tăng không được sớm hơn ngày sử dụng.");
+                ValidateErrorsMsg.Add("Ngày ghi tăng không được sớm hơn ngày sử dụng");
                 return false;
             }
             return true;
@@ -64,25 +64,13 @@ namespace MISA.Core.Services
             // Tách đối tượng: 
             var license = newLicense.License;
             var licenseDetails = newLicense.LicenseDetails;
-            // Kiểm tra nếu danh sách tài sản trống: => trả về cảnh báo
-            if (licenseDetails.Count == 0)
-            {
-                ValidateErrorsMsg.Add("Chọn ít nhất 1 tài sản.");
-                // Nếu có lỗi khởi tạo đối tượng (Khi có lỗi mới khỏi tạo đối tượng)
-                var validateError = new ValidateError();
-                validateError.UserMsg = "Đã có lỗi";
-                validateError.Data = ValidateErrorsMsg;
-                throw new MISAValidateException("Dữ liệu đầu vào không hợp lệ", ValidateErrorsMsg);
-            }
-            // Nếu danh sách tài sản đã có dữ liệu: => thực hiện sửa
-            else
-            {
-                // Sửa thông tin chứng từ:
-                var updateLicense = UpdateService(licenseId, license);
-                // Sửa danh sách tài sản có chứng từ:
-                var updateLicenseDetail = _licenseDetailRepository.MultiUpdate(licenseId, licenseDetails);
-                return updateLicense + updateLicenseDetail;
-            }
+
+            // Sửa thông tin chứng từ:
+            var updateLicense = UpdateService(licenseId, license);
+            // Sửa danh sách tài sản có chứng từ:
+            var updateLicenseDetail = _licenseDetailRepository.MultiUpdate(licenseId, licenseDetails);
+            return updateLicense + updateLicenseDetail;
+
         }
     }
 }

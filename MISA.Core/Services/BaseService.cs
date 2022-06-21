@@ -52,9 +52,9 @@ namespace MISA.Core.Services
             else
             {
                 // Nếu có lỗi khởi tạo đối tượng (Khi có lỗi mới khỏi tạo đối tượng)
-                var validateError = new ValidateError();
-                validateError.UserMsg = "Đã có lỗi";
-                validateError.Data = ValidateErrorsMsg;
+                //var validateError = new ValidateError();
+                //validateError.UserMsg = "Đã có lỗi";
+                //validateError.Data = ValidateErrorsMsg;
                 throw new MISAValidateException("Dữ liệu đầu vào không hợp lệ", ValidateErrorsMsg);
             }
         }
@@ -89,9 +89,9 @@ namespace MISA.Core.Services
             else
             {
                 // Nếu có lỗi khởi tạo đối tượng (Khi có lỗi mới khỏi tạo đối tượng)
-                var validateError = new ValidateError();
-                validateError.UserMsg = "Đã có lỗi";
-                validateError.Data = ValidateErrorsMsg;
+                //var validateError = new ValidateError();
+                //validateError.UserMsg = "Đã có lỗi";
+                //validateError.Data = ValidateErrorsMsg;
                 throw new MISAValidateException(Resources.ResourceVN.ErrorValidate_VN, ValidateErrorsMsg);
             }
         }
@@ -121,7 +121,7 @@ namespace MISA.Core.Services
                 var isFriendlyName = prop.IsDefined(typeof(FriendlyName), true);
                 if (isFriendlyName)
                 {
-                    propFriendlyName = (prop.GetCustomAttributes(typeof(FriendlyName), true)[0] as FriendlyName).Name;
+                    propFriendlyName = (prop.GetCustomAttributes(typeof(FriendlyName), true)[0] as FriendlyName)?.Name;
                 }
 
                 // 1. Thông tin bắt buộc nhập
@@ -136,8 +136,8 @@ namespace MISA.Core.Services
                 var isMaxLength = prop.IsDefined(typeof(MaxLength), true);
                 if (isMaxLength)
                 {
-                    var maxLength = (prop.GetCustomAttributes(typeof(MaxLength), true)[0] as MaxLength).Length;
-                    if (propValue.ToString().Length > maxLength)
+                    var maxLength = (prop.GetCustomAttributes(typeof(MaxLength), true)[0] as MaxLength)?.Length;
+                    if (propValue?.ToString()?.Length > maxLength)
                     {
                         isValidate = false;
                         ValidateErrorsMsg.Add(string.Format(Resources.ResourceVN.ErrorValidate_ProperyMaxLength, propFriendlyName, maxLength));

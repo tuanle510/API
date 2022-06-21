@@ -10,5 +10,6 @@ namespace MISA.Core.Interfaces.Services
 {
     public interface IFixedAssetService: IBaseService<FixedAsset>
     {
+        public object DeleteService (Guid[] fixedAssetIdList);
     }
 }

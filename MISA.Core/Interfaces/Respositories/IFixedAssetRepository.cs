@@ -37,5 +37,11 @@ namespace MISA.Core.Interfaces.Respositories
         /// <returns></returns>
         object GetRestFixedAssetList(Guid[] fixedAssetList, string searchAsset, int pageIndex, int pageSize);
 
+        /// <summary>
+        /// Xử lí kiểm tra tài sản đã có mã chứng từ chưa
+        /// </summary>
+        /// <param name="fixedAssetId"></param>
+        /// <returns></returns>
+        object CheckAssetHasLicense(Guid[] fixedAssetIdList);
     }
 }
